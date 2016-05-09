@@ -1,6 +1,7 @@
 package com.example.nofit.summary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,8 @@ public class LogInActivity extends ActionBarActivity {
                     @Override
                     public void success() {
                         Log.d("TAG", "login OK");
+                        Intent intent = new Intent(getApplicationContext(), MainNotesActivity.class);
+                        startActivity(intent);
                     }
 
                     @Override
