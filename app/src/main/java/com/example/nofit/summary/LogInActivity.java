@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+     
 import com.example.nofit.summary.model.Model;
 import com.example.nofit.summary.model.ModelFirebase;
 import com.example.nofit.summary.model.Student;
