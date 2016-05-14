@@ -12,4 +12,10 @@
     tools:context="com.example.nofit.summary.MainNotesActivity"
     tools:showIn="@layout/app_bar_main_notes">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_frag_container">
+    </FrameLayout>
+
 </RelativeLayout>
