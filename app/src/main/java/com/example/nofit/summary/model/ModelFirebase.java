@@ -24,8 +24,8 @@ public class ModelFirebase {
         myFirebaseRef = new Firebase("https://dazzling-torch-343.firebaseio.com/");
     }
 
-    public void getStudent(final Model.GetStudentListener listener) {
-        Firebase stRef = myFirebaseRef.child("student").child(getUserId());
+    public void getStudent(String id, final Model.GetStudentListener listener) {
+        Firebase stRef = myFirebaseRef.child("Students").child(id);
         // Attach a listener to read the data at our posts reference
         stRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -43,17 +43,17 @@ public class ModelFirebase {
     }
 
     public void add(Student st, Model.AddStudentListener listener) {
-        login(st.getEmailaddress(),st.password,null);
-        st.setId(getUserId());
-        Firebase stRef = myFirebaseRef.child("Students").child(getUserId());
+//        login(st.getEmailaddress(),st.password,null);
+//        st.setId(getUserId());
+        Firebase stRef = myFirebaseRef.child("Students").child(st.getId());
         stRef.setValue(st);
     }
 
     public void signeup(String email, String pwd, final Model.SignupListener listener) {
-        myFirebaseRef.createUser(email, pwd, new Firebase.ResultHandler() {
+            myFirebaseRef.createUser(email, pwd, new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
-                listener.success();
+                listener.success(null);
             }
 
             @Override
@@ -68,7 +68,7 @@ public class ModelFirebase {
         myFirebaseRef.authWithPassword(email, pwd, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                listener.success();
+                listener.success(authData);
             }
 
             @Override

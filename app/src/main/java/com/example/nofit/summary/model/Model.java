@@ -1,7 +1,7 @@
 package com.example.nofit.summary.model;
-import com.example.nofit.summary.LogInActivity;
 
-import java.util.List;
+import com.example.nofit.summary.StudApplication;
+import com.firebase.client.AuthData;
 
 /**
  * Created by Kobi on 08/05/2016.
@@ -25,7 +25,7 @@ public class Model {
     }
 
     private Model() {
-        firebaseModel = new ModelFirebase(LogInActivity.getContext());
+        firebaseModel = new ModelFirebase(StudApplication.getContext());
     }
 
     public interface GetStudentListener {
@@ -33,11 +33,15 @@ public class Model {
     }
 
     public void getStudent(GetStudentListener listener) {
-        firebaseModel.getStudent(listener);
+        firebaseModel.getStudent(getUserId(), listener);
+    }
+
+    public void getStudentById(String id, Model.GetStudentListener listener) {
+        firebaseModel.getStudent(id, listener);
     }
 
     public interface SignupListener {
-        public void success();
+        public void success(AuthData authData);
 
         public void fail(String msg);
     }

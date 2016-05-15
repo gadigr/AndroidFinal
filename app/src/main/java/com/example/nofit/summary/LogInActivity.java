@@ -12,6 +12,7 @@ import android.widget.EditText;
 import com.example.nofit.summary.model.Model;
 import com.example.nofit.summary.model.ModelFirebase;
 import com.example.nofit.summary.model.Student;
+import com.firebase.client.AuthData;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class LogInActivity extends ActionBarActivity {
 
                 Model.instance().login(etEmail.getText().toString(), etPassword.getText().toString(), new Model.SignupListener() {
                     @Override
-                    public void success() {
+                    public void success(AuthData authData) {
                         Log.d("TAG", "login OK");
                         Intent intent = new Intent(getApplicationContext(), MainNotesActivity.class);
                         startActivity(intent);
@@ -49,7 +50,7 @@ public class LogInActivity extends ActionBarActivity {
                 Model.instance().getStudent(new Model.GetStudentListener() {
                     @Override
                     public void done(Student st) {
-                        Log.d("TAG", "Get Student");
+                        Log.d("TAG", "Get Student: ");
                     }
                 });
 

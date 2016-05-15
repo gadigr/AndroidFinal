@@ -45,12 +45,6 @@ public class MainNotesActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-//        ProfileFragment frgProfile = new ProfileFragment();
-//        android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        transaction.add(R.id.main_frag_container,frgProfile, "frgProfile");
-//        transaction.commit();
-
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
