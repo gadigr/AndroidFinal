@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.nofit.summary.model.Model;
 import com.example.nofit.summary.model.Student;
@@ -27,10 +28,14 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_USER_ID = "userid";
 
-    // TODO: Rename and change types of parameters
+
     private String mUserId;
 
     private OnFragmentInteractionListener mListener;
+
+    TextView txtName;
+    TextView txtEmail;
+    TextView txtPassword;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -63,15 +68,24 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        txtName = (TextView)rootView.findViewById(R.id.txtName);
+        txtEmail = (TextView)rootView.findViewById(R.id.txtEmail);
+        txtPassword = (TextView)rootView.findViewById(R.id.txtPassword);
+
         Model.instance().getStudent(new Model.GetStudentListener() {
             @Override
             public void done(Student st) {
-
+                txtName.setText(st.getName());
+                txtEmail.setText(st.getEmailaddress());
+                txtPassword.setText(st.password);
             }
         });
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
