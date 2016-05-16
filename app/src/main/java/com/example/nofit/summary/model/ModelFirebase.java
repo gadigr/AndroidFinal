@@ -42,11 +42,16 @@ public class ModelFirebase {
 
     }
 
-    public void add(Student st, Model.AddStudentListener listener) {
+    public void addStudent(Student st, Model.AddStudentListener listener) {
 //        login(st.getEmailaddress(),st.password,null);
 //        st.setId(getUserId());
         Firebase stRef = myFirebaseRef.child("Students").child(st.getId());
         stRef.setValue(st);
+    }
+
+    public void addSummary(Summary su, Model.AddSummaryListener listener) {
+        Firebase stRef = myFirebaseRef.child("Summary").child(su.getId());
+        stRef.setValue(su);
     }
 
     public void signeup(String email, String pwd, final Model.SignupListener listener) {

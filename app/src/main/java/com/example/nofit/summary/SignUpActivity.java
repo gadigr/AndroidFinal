@@ -42,7 +42,7 @@ public class SignUpActivity extends ActionBarActivity {
                             public void success(AuthData authData) {
                                 Student st = new Student(authData.getUid(), etFullName.getText().toString(),etEmail.getText().toString(),"image");
                                 st.password = etPassword.getText().toString();
-                                Model.instance().add(st, new Model.AddStudentListener() {
+                                Model.instance().addStudent(st, new Model.AddStudentListener() {
                                     @Override
                                     public void done(Student st) {
                                         Log.d("TAG", "add OK");
