@@ -9,6 +9,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -53,7 +54,11 @@ public class ModelFirebase {
             myFirebaseRef.createUser(email, pwd, new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
-                listener.success(null);
+                try {
+                    listener.success(null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -68,7 +73,11 @@ public class ModelFirebase {
         myFirebaseRef.authWithPassword(email, pwd, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                listener.success(authData);
+                try {
+                    listener.success(authData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

@@ -1,7 +1,11 @@
 package com.example.nofit.summary.model;
 
+import android.graphics.Bitmap;
+
 import com.example.nofit.summary.StudApplication;
 import com.firebase.client.AuthData;
+
+import java.io.IOException;
 
 /**
  * Created by Kobi on 08/05/2016.
@@ -11,6 +15,7 @@ public class Model {
     private final static Model instance = new Model();
 
     ModelFirebase firebaseModel;
+    ModelCloudinary cloudinaryModel;
 
     public static Model instance() {
         return instance;
@@ -26,6 +31,7 @@ public class Model {
 
     private Model() {
         firebaseModel = new ModelFirebase(StudApplication.getContext());
+        cloudinaryModel = new ModelCloudinary();
     }
 
     public interface GetStudentListener {
@@ -41,7 +47,7 @@ public class Model {
     }
 
     public interface SignupListener {
-        public void success(AuthData authData);
+        public void success(AuthData authData) throws IOException;
 
         public void fail(String msg);
     }
@@ -52,6 +58,10 @@ public class Model {
 
     public void login(String email, String pwd, final SignupListener listener) {
         firebaseModel.login(email, pwd, listener);
+    }
+
+    public String uploadPic(Bitmap pic, String name) throws IOException {
+        return cloudinaryModel.uploadPicture(pic, name);
     }
 
     public String getUserId(){
