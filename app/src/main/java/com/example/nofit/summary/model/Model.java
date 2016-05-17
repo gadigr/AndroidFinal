@@ -25,8 +25,16 @@ public class Model {
         void done(Student st);
     }
 
-    public void add(Student st, AddStudentListener listener) {
-        firebaseModel.add(st, listener);
+    public interface AddSummaryListener {
+        void done(Summary su);
+    }
+
+    public void addStudent(Student st, AddStudentListener listener) {
+        firebaseModel.addStudent(st, listener);
+    }
+
+    public void addSummary(Summary su, AddSummaryListener listener) {
+        firebaseModel.addSummary(su, listener);
     }
 
     private Model() {
