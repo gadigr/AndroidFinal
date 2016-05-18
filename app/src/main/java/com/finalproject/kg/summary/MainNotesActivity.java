@@ -40,7 +40,7 @@ public class MainNotesActivity extends AppCompatActivity
 
                 Calendar cc = Calendar.getInstance();
                 cc.set(2016,01,02,16,33,11);
-                Summary ss = new Summary("Test3", "dc86f497-923d-4c42-b5ac-6a3538e3b8b5", "image2", cc);
+                Summary ss = new Summary("Stud Name", "dc86f497-923d-4c42-b5ac-6a3538e3b8b5", "image2", cc,"Algebra");
                 Model.instance().addSummary(ss,new Model.AddSummaryListener() {
                     @Override
                     public void done(Summary su) {

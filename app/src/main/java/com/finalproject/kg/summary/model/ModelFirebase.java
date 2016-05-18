@@ -26,7 +26,8 @@ public class ModelFirebase {
     public void getAllSummariesAsynch(final Model.GetSummaryListener listener) {
         Firebase  stRef = myFirebaseRef.child("Summaries");
         // Attach an listener to read the data at our posts reference
-        stRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        //stRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        stRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 final List<Summary> suList = new LinkedList<Summary>();
