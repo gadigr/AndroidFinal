@@ -1,4 +1,4 @@
-package com.example.nofit.summary;
+package com.finalproject.kg.summary;
 
 import org.junit.Test;
 

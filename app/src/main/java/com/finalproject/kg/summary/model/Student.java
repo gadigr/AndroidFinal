@@ -1,4 +1,4 @@
-package com.example.nofit.summary.model;
+package com.finalproject.kg.summary.model;
 
 /**
  * Created by Kobi on 07/05/2016.

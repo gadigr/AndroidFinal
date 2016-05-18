@@ -1,7 +1,7 @@
-package com.example.nofit.summary.model;
+package com.finalproject.kg.summary.model;
 
 import android.content.Context;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
@@ -11,7 +11,6 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Kobi on 07/05/2016.
@@ -22,6 +21,31 @@ public class ModelFirebase {
     public ModelFirebase(final Context context) {
         Firebase.setAndroidContext(context);
         myFirebaseRef = new Firebase("https://dazzling-torch-343.firebaseio.com/");
+    }
+
+    public void getAllSummariesAsynch(final Model.GetSummaryListener listener) {
+        Firebase  stRef = myFirebaseRef.child("Summaries");
+        // Attach an listener to read the data at our posts reference
+        stRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                final List<Summary> suList = new LinkedList<Summary>();
+                Log.d("TAG", "There are " + snapshot.getChildrenCount() + " blog posts");
+                for (DataSnapshot stSnapshot : snapshot.getChildren()) {
+                    Summary su = stSnapshot.getValue(Summary.class);
+                    //Log.d("TAG", st.getFname() + " - " + st.getId());
+                    Log.d("TAG","kkkkkk3");
+                    suList.add(su);
+                }
+                listener.onResult(suList);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+                listener.onCancel();
+            }
+        });
     }
 
     public void getStudent(String id, final Model.GetStudentListener listener) {
@@ -50,8 +74,11 @@ public class ModelFirebase {
     }
 
     public void addSummary(Summary su, Model.AddSummaryListener listener) {
-        Firebase stRef = myFirebaseRef.child("Summary").child(su.getId());
-        stRef.setValue(su);
+        //Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
+        Firebase stRef = myFirebaseRef.child("Summaries");
+        Firebase stRefPush = stRef.push();
+
+        stRefPush.setValue(su);
     }
 
     public void signeup(String email, String pwd, final Model.SignupListener listener) {

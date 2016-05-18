@@ -1,4 +1,4 @@
-package com.example.nofit.summary;
+package com.finalproject.kg.summary;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,8 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.nofit.summary.model.Model;
-import com.example.nofit.summary.model.Summary;
+import com.finalproject.kg.summary.model.Model;
+import com.finalproject.kg.summary.model.Summary;
+
+import java.util.Calendar;
 
 public class MainNotesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,8 +37,20 @@ public class MainNotesActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Calendar cc = Calendar.getInstance();
+                cc.set(2016,01,02,16,33,11);
+                Summary ss = new Summary("Test3", "dc86f497-923d-4c42-b5ac-6a3538e3b8b5", "image2", cc);
+                Model.instance().addSummary(ss,new Model.AddSummaryListener() {
+                    @Override
+                    public void done(Summary su) {
+                        Log.d("TAG", "Wirte New Feed ");
+                    }
+                });
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         });
 

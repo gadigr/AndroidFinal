@@ -1,4 +1,4 @@
-package com.example.nofit.summary;
+package com.finalproject.kg.summary;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
