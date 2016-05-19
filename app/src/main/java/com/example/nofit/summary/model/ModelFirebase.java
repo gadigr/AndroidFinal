@@ -10,8 +10,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -23,6 +25,30 @@ public class ModelFirebase {
     public ModelFirebase(final Context context) {
         Firebase.setAndroidContext(context);
         myFirebaseRef = new Firebase("https://dazzling-torch-343.firebaseio.com/");
+    }
+
+    public void updateStudent(Student st, final Model.UpdateStudentListenr listener){
+        Firebase stRef = myFirebaseRef.child("Students").child(st.getId());
+        Map<String, Object> update = new HashMap<String, Object>();
+        update.put("emailaddress", st.getEmailaddress());
+        update.put("name", st.getName());
+        update.put("imageName", st.getImageName());
+//        update.put("password", st.password);
+
+
+
+
+        stRef.updateChildren(update, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                } else {
+                    System.out.println("Data saved successfully.");
+                    listener.done(firebaseError);
+                }
+            }
+        });
     }
 
     public void getStudent(String id, final Model.GetStudentListener listener) {

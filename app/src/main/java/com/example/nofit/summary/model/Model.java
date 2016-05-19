@@ -1,9 +1,11 @@
 package com.example.nofit.summary.model;
 
 import android.graphics.Bitmap;
+import android.text.style.UpdateAppearance;
 
 import com.example.nofit.summary.StudApplication;
 import com.firebase.client.AuthData;
+import com.firebase.client.FirebaseError;
 
 import java.io.IOException;
 
@@ -27,6 +29,14 @@ public class Model {
 
     public interface AddSummaryListener {
         void done(Summary su);
+    }
+
+    public interface UpdateStudentListenr {
+        void done(FirebaseError err);
+    }
+
+    public void updateStudent(Student st, UpdateStudentListenr listener) {
+        firebaseModel.updateStudent(st, listener);
     }
 
     public void addStudent(Student st, AddStudentListener listener) {

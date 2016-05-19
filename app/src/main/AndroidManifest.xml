@@ -31,6 +31,8 @@
             android:name=".MainNotesActivity"
             android:label="@string/title_activity_main_notes"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EditProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

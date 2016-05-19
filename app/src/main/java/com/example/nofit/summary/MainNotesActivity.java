@@ -23,6 +23,7 @@ public class MainNotesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout mDrawer;
+    FloatingActionButton fabBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +32,8 @@ public class MainNotesActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabBtn = (FloatingActionButton) findViewById(R.id.fab);
+        fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -57,7 +58,7 @@ public class MainNotesActivity extends AppCompatActivity
         Class fragmentClass;
         switch(menuItem.getItemId()) {
             case R.id.nav_feed:
-                fragmentClass = ProfileFragment.class;
+                fragmentClass = FeedListFragment.class;
                 break;
             case R.id.nav_profile:
                 fragmentClass = ProfileFragment.class;
@@ -74,7 +75,7 @@ public class MainNotesActivity extends AppCompatActivity
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragment).addToBackStack(null).commit();
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -83,6 +84,14 @@ public class MainNotesActivity extends AppCompatActivity
         // Close the navigation drawer
         mDrawer.closeDrawers();
     }
+
+    public void showFloatingActionButton() {
+        fabBtn.show();
+    };
+
+    public void hideFloatingActionButton() {
+        fabBtn.hide();
+    };
 
     @Override
     public void onBackPressed() {
@@ -108,10 +117,7 @@ public class MainNotesActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
