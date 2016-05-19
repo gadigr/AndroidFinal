@@ -1,4 +1,4 @@
-package com.example.nofit.summary;
+package com.finalproject.kg.summary;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -14,8 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.nofit.summary.model.Model;
-import com.example.nofit.summary.model.Student;
+import com.finalproject.kg.summary.model.Model;
+import com.finalproject.kg.summary.model.Student;
 import com.firebase.client.FirebaseError;
 
 public class EditProfileActivity extends AppCompatActivity {

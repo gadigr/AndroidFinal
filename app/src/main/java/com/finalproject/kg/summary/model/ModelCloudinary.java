@@ -1,4 +1,4 @@
-package com.example.nofit.summary.model;
+package com.finalproject.kg.summary.model;
 
 import android.app.ProgressDialog;
 import android.graphics.AvoidXfermode;

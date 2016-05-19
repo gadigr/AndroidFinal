@@ -1,4 +1,4 @@
-package com.example.nofit.summary;
+package com.finalproject.kg.summary;
 
 
 import android.app.Activity;
@@ -17,8 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.nofit.summary.model.Model;
-import com.example.nofit.summary.model.Student;
+import com.finalproject.kg.summary.model.Model;
+import com.finalproject.kg.summary.model.Student;
 
 
 /**

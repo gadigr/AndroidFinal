@@ -1,13 +1,16 @@
-package com.example.nofit.summary.model;
+package com.finalproject.kg.summary.model;
+
+import java.util.List;
 
 import android.graphics.Bitmap;
 import android.text.style.UpdateAppearance;
-
-import com.example.nofit.summary.StudApplication;
+import com.finalproject.kg.summary.StudApplication;
 import com.firebase.client.AuthData;
 import com.firebase.client.FirebaseError;
 
 import java.io.IOException;
+
+import java.util.List;
 
 /**
  * Created by Kobi on 08/05/2016.
@@ -21,6 +24,15 @@ public class Model {
 
     public static Model instance() {
         return instance;
+    }
+
+    public interface GetSummaryListener{
+        public void onResult(List<Summary> summaries);
+        public void onCancel();
+    }
+
+    public void getAllSummariesAsynch(GetSummaryListener listener){
+        firebaseModel.getAllSummariesAsynch(listener);
     }
 
     public interface AddStudentListener {

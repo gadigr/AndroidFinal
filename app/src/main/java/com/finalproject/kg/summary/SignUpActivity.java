@@ -1,4 +1,4 @@
-package com.example.nofit.summary;
+package com.finalproject.kg.summary;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.nofit.summary.model.Model;
-import com.example.nofit.summary.model.ModelFirebase;
-import com.example.nofit.summary.model.Student;
+import com.finalproject.kg.summary.model.Model;
+import com.finalproject.kg.summary.model.Student;
 import com.firebase.client.AuthData;
 
 import java.io.IOException;

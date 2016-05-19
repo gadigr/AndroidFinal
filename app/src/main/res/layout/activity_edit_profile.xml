@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.example.nofit.summary.EditProfileActivity">
+    tools:context="com.finalproject.kg.summary.EditProfileActivity">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="250dp"
