@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -101,7 +102,8 @@ public class FeedListFragment extends Fragment {
             final TextView feed_list_row_name = (TextView) convertView.findViewById(R.id.feed_list_row_name);
             final TextView feed_list_row_date = (TextView) convertView.findViewById(R.id.feed_list_row_date);
             final TextView feed_list_row_course = (TextView) convertView.findViewById(R.id.feed_list_row_course);
-            final ImageButton feed_list_row_like = (ImageButton) convertView.findViewById(R.id.feed_list_row_like);
+            final ImageButton feed_list_row_like_image = (ImageButton) convertView.findViewById(R.id.feed_list_row_like_image);
+            final Button feed_list_row_like = (Button) convertView.findViewById(R.id.feed_list_row_like);
             final TextView feed_list_row_like_count = (TextView) convertView.findViewById(R.id.feed_list_row_like_count);
             convertView.setTag(position);
 
@@ -128,11 +130,11 @@ public class FeedListFragment extends Fragment {
             // IF the user do like
             if(bDoLike)
             {
-                feed_list_row_like.setBackgroundColor(Color.GREEN);
+                feed_list_row_like_image.setImageResource(R.mipmap.ic_thumb_up_white_24dp);
             }
             else
             {
-                feed_list_row_like.setBackgroundColor(Color.RED);
+                feed_list_row_like_image.setImageResource(R.mipmap.ic_thumb_up_black_24dp);
             }
 
             // Write the number of like
