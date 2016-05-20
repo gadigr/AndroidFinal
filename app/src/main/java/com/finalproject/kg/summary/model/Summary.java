@@ -20,6 +20,7 @@ public class Summary {
     private Calendar DateTime;
     private String Course;
     private List<SummaryLike> lstLike;
+    private List<SummaryComment> lstComment;
 
     public String getId() {
         return Id;
@@ -47,6 +48,10 @@ public class Summary {
 
     public List<SummaryLike> getLstLike() {
         return lstLike;
+    }
+
+    public List<SummaryComment> getLstComment() {
+        return lstComment;
     }
 
     public void setName(String Name)
@@ -85,11 +90,16 @@ public class Summary {
         this.lstLike = lstLike;
     }
 
+    public void setLstComment(List<SummaryComment> lstComment)
+    {
+        this.lstComment = lstComment;
+    }
+
     public Summary()
     {
     }
 
-    public Summary(String Id,String Name, String StudentId, String SummaryImage, Calendar DateTime,String Course,List<SummaryLike> lstLike)
+    public Summary(String Id,String Name, String StudentId, String SummaryImage, Calendar DateTime,String Course,List<SummaryLike> lstLike, List<SummaryComment> lstComment)
     {
         this.Id = Id;
         this.Name = Name;
@@ -98,6 +108,7 @@ public class Summary {
         this.DateTime = DateTime;
         this.Course = Course;
         this.lstLike = lstLike;
+        this.lstComment = lstComment;
     }
 
 }

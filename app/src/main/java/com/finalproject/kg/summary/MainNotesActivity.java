@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Summary;
+import com.finalproject.kg.summary.model.SummaryComment;
 import com.finalproject.kg.summary.model.SummaryLike;
 
 import java.util.Calendar;
@@ -52,7 +53,14 @@ public class MainNotesActivity extends AppCompatActivity
                 sl.setUserId(Model.instance().getUserId());
                 sl.setLike(false);
                 lstLike.add(sl);
-                Summary ss = new Summary("","Stud Name", Model.instance().getUserId(), "image2", cc,"Algebra",lstLike);
+
+                List<SummaryComment> lstComment = new LinkedList<SummaryComment>();
+                SummaryComment sc = new SummaryComment();
+                sc.setId("-1");
+                sc.setUserWriterId(Model.instance().getUserId());
+                sc.setComment("");
+                lstComment.add(sc);
+                Summary ss = new Summary("","Stud Name", Model.instance().getUserId(), "image2", cc,"Algebra",lstLike,lstComment);
                 Model.instance().addSummary(ss,new Model.AddSummaryListener() {
                     @Override
                     public void done(Summary su) {

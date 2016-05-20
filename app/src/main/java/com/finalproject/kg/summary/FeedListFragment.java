@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
 import com.finalproject.kg.summary.model.Summary;
+import com.finalproject.kg.summary.model.SummaryComment;
 import com.finalproject.kg.summary.model.SummaryLike;
 import com.firebase.client.DataSnapshot;
 
@@ -105,6 +106,8 @@ public class FeedListFragment extends Fragment {
             final ImageButton feed_list_row_like_image = (ImageButton) convertView.findViewById(R.id.feed_list_row_like_image);
             final Button feed_list_row_like = (Button) convertView.findViewById(R.id.feed_list_row_like);
             final TextView feed_list_row_like_count = (TextView) convertView.findViewById(R.id.feed_list_row_like_count);
+            final Button feed_list_row_comment = (Button) convertView.findViewById(R.id.feed_list_row_comment);
+            final TextView feed_list_row_comment_count = (TextView) convertView.findViewById(R.id.feed_list_row_comment_count);
             convertView.setTag(position);
 
             final Summary su = data.get(position);
@@ -113,6 +116,16 @@ public class FeedListFragment extends Fragment {
             feed_list_row_date.setText(sdf.format(su.getDateTime().getTime()));
             feed_list_row_course.setText(su.getCourse());
 
+
+            // Count the number of the Comments
+            int nCountComments = 0;
+            for (SummaryComment currSc : su.getLstComment()) {
+                if (!currSc.getId().equals("-1")) {
+                    nCountComments++;
+                }
+            }
+
+            feed_list_row_comment_count.setText(String.valueOf(nCountComments));
 
             // Check if the user do like, and count the number of the like
             boolean bDoLike = false;
