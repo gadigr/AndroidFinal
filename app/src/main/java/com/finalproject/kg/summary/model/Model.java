@@ -44,6 +44,10 @@ public class Model {
         void done();
     }
 
+    public interface AddCommentListener {
+        void done();
+    }
+
     public interface AddSummaryListener {
         void done(Summary su);
     }
@@ -62,6 +66,10 @@ public class Model {
 
     public void doLikeToSummary(Summary su, Model.doLikeToSummaryListener listener) {
         firebaseModel.doLikeToSummary(su, listener);
+    }
+
+    public void addCommentToSummary(Summary su, Model.AddCommentListener listener) {
+        firebaseModel.addCommentToSummary(su, listener);
     }
 
     public void addSummary(Summary su, AddSummaryListener listener) {

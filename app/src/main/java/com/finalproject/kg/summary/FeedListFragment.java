@@ -1,31 +1,31 @@
 package com.finalproject.kg.summary;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.finalproject.kg.summary.model.Model;
-import com.finalproject.kg.summary.model.Student;
 import com.finalproject.kg.summary.model.Summary;
+import com.finalproject.kg.summary.model.SummaryComment;
 import com.finalproject.kg.summary.model.SummaryLike;
-import com.firebase.client.DataSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 public class FeedListFragment extends Fragment {
 
@@ -34,6 +34,8 @@ public class FeedListFragment extends Fragment {
     MyAddapter adapter;
     ProgressBar pbLoading;
     View view;
+
+    CommentsListFragment fragB = new CommentsListFragment();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,17 +51,17 @@ public class FeedListFragment extends Fragment {
         return view;
     }
 
-
     public void LoadAllSummary() {
         pbLoading.setVisibility(View.VISIBLE);
         Model.instance().getAllSummariesAsynch(new Model.GetSummaryListener() {
             @Override
             public void onResult(List<Summary> summaries) {
-                pbLoading.setVisibility(View.GONE);
                 data = summaries;
                 Collections.reverse(data);
                 adapter.notifyDataSetChanged();
+                fragB.UpdateData();
                 Snackbar.make(view, "New Post", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                pbLoading.setVisibility(View.GONE);
             }
 
             @Override
@@ -69,8 +71,9 @@ public class FeedListFragment extends Fragment {
         });
     }
 
-    class MyAddapter extends BaseAdapter {
 
+
+    class MyAddapter extends BaseAdapter {
 
         @Override
         public int getCount() {
@@ -101,8 +104,11 @@ public class FeedListFragment extends Fragment {
             final TextView feed_list_row_name = (TextView) convertView.findViewById(R.id.feed_list_row_name);
             final TextView feed_list_row_date = (TextView) convertView.findViewById(R.id.feed_list_row_date);
             final TextView feed_list_row_course = (TextView) convertView.findViewById(R.id.feed_list_row_course);
-            final ImageButton feed_list_row_like = (ImageButton) convertView.findViewById(R.id.feed_list_row_like);
+            final ImageButton feed_list_row_like_image = (ImageButton) convertView.findViewById(R.id.feed_list_row_like_image);
+            final Button feed_list_row_like = (Button) convertView.findViewById(R.id.feed_list_row_like);
             final TextView feed_list_row_like_count = (TextView) convertView.findViewById(R.id.feed_list_row_like_count);
+            final Button feed_list_row_comment = (Button) convertView.findViewById(R.id.feed_list_row_comment);
+            final TextView feed_list_row_comment_count = (TextView) convertView.findViewById(R.id.feed_list_row_comment_count);
             convertView.setTag(position);
 
             final Summary su = data.get(position);
@@ -111,6 +117,16 @@ public class FeedListFragment extends Fragment {
             feed_list_row_date.setText(sdf.format(su.getDateTime().getTime()));
             feed_list_row_course.setText(su.getCourse());
 
+
+            // Count the number of the Comments
+            int nCountComments = 0;
+            for (SummaryComment currSc : su.getLstComment()) {
+                if (currSc.getShow()) {
+                    nCountComments++;
+                }
+            }
+
+            feed_list_row_comment_count.setText(String.valueOf(nCountComments));
 
             // Check if the user do like, and count the number of the like
             boolean bDoLike = false;
@@ -128,15 +144,29 @@ public class FeedListFragment extends Fragment {
             // IF the user do like
             if(bDoLike)
             {
-                feed_list_row_like.setBackgroundColor(Color.GREEN);
+                feed_list_row_like_image.setImageResource(R.mipmap.ic_thumb_up_white_24dp);
             }
             else
             {
-                feed_list_row_like.setBackgroundColor(Color.RED);
+                feed_list_row_like_image.setImageResource(R.mipmap.ic_thumb_up_black_24dp);
             }
 
             // Write the number of like
             feed_list_row_like_count.setText(String.valueOf(nCountLike));
+
+            // On Click Comment
+            feed_list_row_comment.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     //child fragment
+                     FragmentManager childFragMan = getChildFragmentManager();
+                     FragmentTransaction childFragTrans = childFragMan.beginTransaction();
+                     fragB.setSummary(su);
+                     childFragTrans.add(R.id.fragment, fragB);
+                     childFragTrans.addToBackStack("B");
+                     childFragTrans.commit();
+                 }
+             });
 
             // On click Like
             feed_list_row_like.setOnClickListener(new View.OnClickListener() {

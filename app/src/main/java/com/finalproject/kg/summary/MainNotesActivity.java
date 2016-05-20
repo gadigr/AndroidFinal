@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Summary;
+import com.finalproject.kg.summary.model.SummaryComment;
 import com.finalproject.kg.summary.model.SummaryLike;
 
 import java.util.Calendar;
@@ -46,13 +47,21 @@ public class MainNotesActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 Calendar cc = Calendar.getInstance();
-                cc.set(2016,01,02,16,33,11);
+                cc.set(cc.get(Calendar.YEAR), cc.get(Calendar.MONTH),cc.get(Calendar.DAY_OF_MONTH) ,  cc.get(Calendar.HOUR),  cc.get(Calendar.MINUTE),  cc.get(Calendar.SECOND));
                 List<SummaryLike> lstLike = new LinkedList<SummaryLike>();
                 SummaryLike sl = new SummaryLike();
                 sl.setUserId(Model.instance().getUserId());
                 sl.setLike(false);
                 lstLike.add(sl);
-                Summary ss = new Summary("","Stud Name", Model.instance().getUserId(), "image2", cc,"Algebra",lstLike);
+
+                List<SummaryComment> lstComment = new LinkedList<SummaryComment>();
+                SummaryComment sc = new SummaryComment();
+                sc.setShow(false);
+                sc.setUserWriterId(Model.instance().getUserId());
+                sc.setComment("");
+                sc.setDateTime(cc);
+                lstComment.add(sc);
+                Summary ss = new Summary("","Stud Name", Model.instance().getUserId(), "image2", cc,"Algebra",lstLike,lstComment);
                 Model.instance().addSummary(ss,new Model.AddSummaryListener() {
                     @Override
                     public void done(Summary su) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.finalproject.kg.summary" >
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -8,13 +9,13 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.finalproject.kg.summary.StudApplication"
+        android:name=".StudApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme" >
-        <activity android:name="com.finalproject.kg.summary.MainActivity" >
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,15 +23,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.finalproject.kg.summary.SignUpActivity"
+            android:name=".SignUpActivity"
             android:label="@string/title_activity_log_in" />
-        <activity android:name="com.finalproject.kg.summary.LogInActivity" />
+        <activity android:name=".LogInActivity" />
         <activity
-            android:name="com.finalproject.kg.summary.MainNotesActivity"
+            android:name=".MainNotesActivity"
             android:label="@string/title_activity_main_notes"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.finalproject.kg.summary.EditProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".EditProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
