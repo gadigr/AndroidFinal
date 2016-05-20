@@ -48,14 +48,14 @@ public class LogInActivity extends ActionBarActivity {
                         pbLoading.setVisibility(View.GONE);
                     }
                 });
-
+/*
                 Model.instance().getStudent(new Model.GetStudentListener() {
                     @Override
                     public void done(Student st) {
                         Log.d("TAG", "Get Student: ");
                     }
                 });
-
+*/
             }
         });
     }

@@ -1,5 +1,7 @@
 package com.finalproject.kg.summary;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,11 +18,14 @@ import android.widget.TextView;
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
 import com.finalproject.kg.summary.model.Summary;
+import com.finalproject.kg.summary.model.SummaryLike;
+import com.firebase.client.DataSnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class FeedListFragment extends Fragment {
 
@@ -44,9 +50,7 @@ public class FeedListFragment extends Fragment {
     }
 
 
-    public void LoadAllSummary()
-    {
-        Log.d("TAG","kkkkkk1");
+    public void LoadAllSummary() {
         pbLoading.setVisibility(View.VISIBLE);
         Model.instance().getAllSummariesAsynch(new Model.GetSummaryListener() {
             @Override
@@ -55,7 +59,6 @@ public class FeedListFragment extends Fragment {
                 data = summaries;
                 Collections.reverse(data);
                 adapter.notifyDataSetChanged();
-                Log.d("TAG","kkkkkk2");
                 Snackbar.make(view, "New Post", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
 
@@ -72,12 +75,10 @@ public class FeedListFragment extends Fragment {
         @Override
         public int getCount() {
             return data.size();
-            //return 1;
         }
 
         @Override
         public Object getItem(int position) {
-            //return new Object();
             return data.get(position);
         }
 
@@ -89,29 +90,94 @@ public class FeedListFragment extends Fragment {
         @Override
         public View getView(int position, View convertView,
                             ViewGroup parent) {
-            if(convertView == null){
+            if (convertView == null) {
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 convertView = inflater.inflate(R.layout.feed_list_row, null);
                 Log.d("TAG", "create view:" + position);
-            }else{
+            } else {
                 Log.d("TAG", "use convert view:" + position);
             }
 
-                final TextView feed_list_row_name = (TextView) convertView.findViewById(R.id.feed_list_row_name);
-                final TextView feed_list_row_date = (TextView) convertView.findViewById(R.id.feed_list_row_date);
-                final TextView feed_list_row_course = (TextView) convertView.findViewById(R.id.feed_list_row_course);
-                convertView.setTag(position);
+            final TextView feed_list_row_name = (TextView) convertView.findViewById(R.id.feed_list_row_name);
+            final TextView feed_list_row_date = (TextView) convertView.findViewById(R.id.feed_list_row_date);
+            final TextView feed_list_row_course = (TextView) convertView.findViewById(R.id.feed_list_row_course);
+            final ImageButton feed_list_row_like = (ImageButton) convertView.findViewById(R.id.feed_list_row_like);
+            final TextView feed_list_row_like_count = (TextView) convertView.findViewById(R.id.feed_list_row_like_count);
+            convertView.setTag(position);
 
-                Summary su = data.get(position);
-                feed_list_row_name.setText(su.getName());
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-                feed_list_row_date.setText(sdf.format(su.getDateTime().getTime()));
+            final Summary su = data.get(position);
+            feed_list_row_name.setText(su.getName());
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+            feed_list_row_date.setText(sdf.format(su.getDateTime().getTime()));
             feed_list_row_course.setText(su.getCourse());
 
+
+            // Check if the user do like, and count the number of the like
+            boolean bDoLike = false;
+            int nCountLike = 0;
+            for (SummaryLike currSl : su.getLstLike()) {
+                if (currSl.getUserId().equals(Model.instance().getUserId())) {
+                    bDoLike = currSl.getLike();
+                }
+                if(currSl.getLike())
+                {
+                    nCountLike++;
+                }
+            }
+
+            // IF the user do like
+            if(bDoLike)
+            {
+                feed_list_row_like.setBackgroundColor(Color.GREEN);
+            }
+            else
+            {
+                feed_list_row_like.setBackgroundColor(Color.RED);
+            }
+
+            // Write the number of like
+            feed_list_row_like_count.setText(String.valueOf(nCountLike));
+
+            // On click Like
+            feed_list_row_like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    // Check if the user do like
+                    boolean bFind = false;
+                    for (SummaryLike currSl : su.getLstLike()) {
+                        if (currSl.getUserId().equals(Model.instance().getUserId())) {
+                            // if the user do like change the like status
+                            bFind = true;
+                            if (currSl.getLike()) {
+                                currSl.setLike(false);
+                            } else {
+                                currSl.setLike(true);
+                            }
+                        }
+                    }
+
+                    // If the user dont do like add new value for the list
+                    if(!bFind)
+                    {
+                        SummaryLike sl = new SummaryLike();
+                        sl.setUserId(Model.instance().getUserId());
+                        sl.setLike(true);
+                        su.getLstLike().add(sl);
+                    }
+
+                    // Update the Summary
+                    Model.instance().doLikeToSummary(su, new Model.doLikeToSummaryListener() {
+                        @Override
+                        public void done() {
+                        }
+                    });
+                }
+            });
 
 
             return convertView;
         }
-    }
 
+    }
 }
