@@ -1,5 +1,6 @@
 package com.finalproject.kg.summary.model;
 
+import java.io.InputStream;
 import java.util.List;
 
 import android.graphics.Bitmap;
@@ -98,8 +99,12 @@ public class Model {
         firebaseModel.login(email, pwd, listener);
     }
 
-    public String uploadPic(Bitmap pic, String name) throws IOException {
-        return cloudinaryModel.uploadPicture(pic, name);
+    public void uploadPic(InputStream pic, String name) throws IOException {
+        cloudinaryModel.uploadPicture(pic, name);
+    }
+
+    public Bitmap getPic(String name) throws IOException {
+        return cloudinaryModel.getPicture(name);
     }
 
     public String getUserId(){

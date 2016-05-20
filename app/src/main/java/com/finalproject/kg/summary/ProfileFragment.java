@@ -15,10 +15,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
+
+import java.io.IOException;
 
 
 /**
@@ -43,6 +46,7 @@ public class ProfileFragment extends Fragment {
     TextView txtName;
     TextView txtEmail;
     TextView txtPassword;
+    ImageView imView;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -79,10 +83,16 @@ public class ProfileFragment extends Fragment {
 
                 Model.instance().getStudent(new Model.GetStudentListener() {
                     @Override
-                    public void done(Student st) {
+                    public void done(Student st)  {
                         txtName.setText(st.getName());
                         txtEmail.setText(st.getEmailaddress());
                         txtPassword.setText(st.password);
+                        try {
+                            imView.setImageBitmap(Model.instance().getPic(st.getImageName()));
+                        }
+                        catch (IOException err) {
+
+                        }
 
                         stud = st;
                     }
