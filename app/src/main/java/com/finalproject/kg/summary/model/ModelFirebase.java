@@ -64,7 +64,6 @@ public class ModelFirebase {
                 listener.done(null);
             }
         });
-
     }
 
     public void addStudent(Student st, Model.AddStudentListener listener) {
@@ -74,11 +73,16 @@ public class ModelFirebase {
         stRef.setValue(st);
     }
 
+    public void doLikeToSummary(Summary su, Model.doLikeToSummaryListener listener) {
+        Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
+        stRef.setValue(su);
+    }
+
     public void addSummary(Summary su, Model.AddSummaryListener listener) {
         //Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
         Firebase stRef = myFirebaseRef.child("Summaries");
         Firebase stRefPush = stRef.push();
-
+        su.setId(stRefPush.getKey());
         stRefPush.setValue(su);
     }
 

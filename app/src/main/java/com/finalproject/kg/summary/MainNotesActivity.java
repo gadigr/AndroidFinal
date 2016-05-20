@@ -18,8 +18,14 @@ import android.view.MenuItem;
 
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Summary;
+import com.finalproject.kg.summary.model.SummaryLike;
 
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 public class MainNotesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +46,12 @@ public class MainNotesActivity extends AppCompatActivity
 
                 Calendar cc = Calendar.getInstance();
                 cc.set(2016,01,02,16,33,11);
-                Summary ss = new Summary("Stud Name", "dc86f497-923d-4c42-b5ac-6a3538e3b8b5", "image2", cc,"Algebra");
+                List<SummaryLike> lstLike = new LinkedList<SummaryLike>();
+                SummaryLike sl = new SummaryLike();
+                sl.setUserId(Model.instance().getUserId());
+                sl.setLike(false);
+                lstLike.add(sl);
+                Summary ss = new Summary("","Stud Name", Model.instance().getUserId(), "image2", cc,"Algebra",lstLike);
                 Model.instance().addSummary(ss,new Model.AddSummaryListener() {
                     @Override
                     public void done(Summary su) {
