@@ -4,7 +4,9 @@ package com.finalproject.kg.summary;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -87,12 +89,15 @@ public class ProfileFragment extends Fragment {
                         txtName.setText(st.getName());
                         txtEmail.setText(st.getEmailaddress());
                         txtPassword.setText(st.password);
-                        try {
-                            imView.setImageBitmap(Model.instance().getPic(st.getImageName()));
-                        }
-                        catch (IOException err) {
 
-                        }
+                        new GetPicTask().execute(st.getImageName());
+
+//                        try {
+//                            imView.setImageBitmap(Model.instance().getPic(st.getImageName()));
+//                        }
+//                        catch (IOException err) {
+//
+//                        }
 
                         stud = st;
                     }
@@ -157,19 +162,46 @@ public class ProfileFragment extends Fragment {
         txtName = (TextView)rootView.findViewById(R.id.txtName);
         txtEmail = (TextView)rootView.findViewById(R.id.txtEmail);
         txtPassword = (TextView)rootView.findViewById(R.id.txtPassword);
-
+        imView = (ImageView)rootView.findViewById(R.id.imProfile) ;
         Model.instance().getStudent(new Model.GetStudentListener() {
             @Override
             public void done(Student st) {
                 txtName.setText(st.getName());
                 txtEmail.setText(st.getEmailaddress());
                 txtPassword.setText(st.password);
+                new GetPicTask().execute(st.getImageName());
 
+//                try {
+//                    imView.setImageBitmap(Model.instance().getPic(st.getImageName()));
+//                }
+//                catch (IOException err) {
+//
+//                }
                 stud = st;
             }
         });
 
         return rootView;
+    }
+
+    private class GetPicTask extends AsyncTask<String, Void, Bitmap> {
+        protected Bitmap doInBackground(String... picName) {
+            Bitmap bmp = null;
+            try {
+                bmp = Model.instance().getPic(picName[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bmp;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+//            setProgressPercent(progress[0]);
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            imView.setImageBitmap(result);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -37,7 +37,7 @@ public class SignUpActivity extends ActionBarActivity {
     Bitmap pic;
     ImageView iv;
     File photoFile;
-    InputStream in;
+        InputStream in;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

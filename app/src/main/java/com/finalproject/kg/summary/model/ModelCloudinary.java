@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.transformation.SubtitlesLayerBuilder;
 import com.cloudinary.utils.ObjectUtils;
 import com.cloudinary.utils.StringUtils;
 
@@ -48,22 +49,44 @@ public class ModelCloudinary {
 
 
         public Bitmap getPicture(String name) throws IOException {
-            URL url = new URL(myCloudinary.url().generate(name));
+            final URL url = new URL(myCloudinary.url().generate(name));
 
+            final Bitmap[] bmp = new Bitmap[1];
+            bmp[0] = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-            return BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//
+//            Runnable runnable = new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        bmp[0] = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                    } catch (IOException e) {
+//                        //TODO: better error handling when image uploading fails
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//
+//            new Thread(runnable).start();
+
+            return bmp[0];
         }
+
+
+
 
         public void uploadPicture(final InputStream inputStream, final String publicId) {
 
-            final Map<String, String> options = new HashMap<>();
-            options.put("public_id", publicId);
+            final Map uploadParams = ObjectUtils.asMap(
+                    "public_id", publicId,
+                    "invalidate", true
+            );
 
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        myCloudinary.uploader().upload(inputStream, options);
+                        myCloudinary.uploader().upload(inputStream, uploadParams);
                     } catch (IOException e) {
                         //TODO: better error handling when image uploading fails
                         e.printStackTrace();

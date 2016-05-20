@@ -1,7 +1,10 @@
 package com.finalproject.kg.summary;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,17 +16,46 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
 import com.firebase.client.FirebaseError;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class EditProfileActivity extends AppCompatActivity {
 
+    private static final int REQUEST_TAKE_PHOTO = 15;
     String mUserId;
     EditText edName;
     EditText edPass;
     EditText edMail;
+    ImageView imImage;
+    InputStream in;
+
+    private class GetPicTask extends AsyncTask<String, Void, Bitmap> {
+        protected Bitmap doInBackground(String... picName) {
+            Bitmap bmp = null;
+            try {
+                bmp = Model.instance().getPic(picName[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bmp;
+        }
+
+        protected void onProgressUpdate(Integer... progress) {
+//            setProgressPercent(progress[0]);
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            imImage.setImageBitmap(result);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,12 +76,24 @@ public class EditProfileActivity extends AppCompatActivity {
         edName = (EditText)findViewById(R.id.edtxtName);
         edMail = (EditText)findViewById(R.id.edtxtEmail);
         edPass = (EditText)findViewById(R.id.edtxtPassword);
+        imImage = (ImageView)findViewById(R.id.imProfileEdit);
 
         mUserId = (String) getIntent().getExtras().get("STUDENT_ID");
         edName.setText((String)getIntent().getExtras().get("STUDENT_NAME"));
         edPass.setText((String) getIntent().getExtras().get("STUDENT_PASS"));
         edMail.setText((String) getIntent().getExtras().get("STUDENT_MAIL"));
-//        (String) getIntent().getExtras().get("STUDENT_IMG")
+
+//            imImage.setImageBitmap(Model.instance().getPic ((String) getIntent().getExtras().get("STUDENT_IMG")));
+            new GetPicTask().execute((String) getIntent().getExtras().get("STUDENT_IMG"));
+
+
+        ((Button)findViewById(R.id.btnChangePic)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePhotoIntent, REQUEST_TAKE_PHOTO);
+            }
+        });
 
         ((Button)findViewById(R.id.buttonCancel)).setOnClickListener(new View.OnClickListener() {
 
@@ -62,8 +106,12 @@ public class EditProfileActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.buttonSave)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Student st = new Student(mUserId, edName.getText().toString(), edMail.getText().toString(), "image");
-
+                Student st = new Student(mUserId, edName.getText().toString(), edMail.getText().toString(), mUserId);
+                try {
+                    Model.instance().uploadPic(in, mUserId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Model.instance().updateStudent(st, new Model.UpdateStudentListenr() {
                     @Override
                     public void done(FirebaseError err) {
@@ -82,6 +130,32 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
             }
         });
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                //File to upload to cloudinary
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                imImage.setImageBitmap(imageBitmap);
+
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                byte[] bitmapdata = bos.toByteArray();
+                in = new ByteArrayInputStream(bitmapdata);
+
+
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // User cancelled the image capture
+                //finish();
+            }
+        }
 
     }
 }
