@@ -31,6 +31,7 @@ public class MainNotesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout mDrawer;
+    FloatingActionButton fabBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,8 @@ public class MainNotesActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabBtn = (FloatingActionButton) findViewById(R.id.fab);
+        fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -75,39 +76,47 @@ public class MainNotesActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
     }
+//
+//    public void selectDrawerItem(MenuItem menuItem) {
+//        // Create a new fragment and specify the fragment to show based on nav item clicked
+//        Fragment fragment = null;
+//        Class fragmentClass;
+//        switch(menuItem.getItemId()) {
+//            case R.id.nav_feed:
+//                fragmentClass = FeedListFragment.class;
+//                break;
+//            case R.id.nav_profile:
+//                fragmentClass = ProfileFragment.class;
+//                break;
+//            default:
+//                fragmentClass = ProfileFragment.class;
+//        }
+//
+//        try {
+//            fragment = (Fragment) fragmentClass.newInstance();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        // Insert the fragment by replacing any existing fragment
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragment).addToBackStack(null).commit();
+//
+//        // Highlight the selected item has been done by NavigationView
+//        menuItem.setChecked(true);
+//        // Set action bar title
+//        setTitle(menuItem.getTitle());
+//        // Close the navigation drawer
+//        mDrawer.closeDrawers();
+//    }
 
-    public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass;
-        switch(menuItem.getItemId()) {
-            case R.id.nav_feed:
-                fragmentClass = ProfileFragment.class;
-                break;
-            case R.id.nav_profile:
-                fragmentClass = ProfileFragment.class;
-                break;
-            default:
-                fragmentClass = ProfileFragment.class;
-        }
+    public void showFloatingActionButton() {
+        fabBtn.show();
+    };
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        mDrawer.closeDrawers();
-    }
+    public void hideFloatingActionButton() {
+        fabBtn.hide();
+    };
 
     @Override
     public void onBackPressed() {
@@ -133,10 +142,7 @@ public class MainNotesActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -158,7 +164,7 @@ public class MainNotesActivity extends AppCompatActivity
         Class fragmentClass;
         switch(item.getItemId()) {
             case R.id.nav_feed:
-                fragmentClass = ProfileFragment.class;
+                fragmentClass = FeedListFragment.class;
                 break;
             case R.id.nav_profile:
                 fragmentClass = ProfileFragment.class;
