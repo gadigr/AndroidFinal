@@ -1,7 +1,14 @@
 package com.finalproject.kg.summary.model;
 
+import java.util.List;
+
+import android.graphics.Bitmap;
+import android.text.style.UpdateAppearance;
 import com.finalproject.kg.summary.StudApplication;
 import com.firebase.client.AuthData;
+import com.firebase.client.FirebaseError;
+
+import java.io.IOException;
 
 import java.util.List;
 
@@ -13,6 +20,7 @@ public class Model {
     private final static Model instance = new Model();
 
     ModelFirebase firebaseModel;
+    ModelCloudinary cloudinaryModel;
 
     public static Model instance() {
         return instance;
@@ -39,6 +47,14 @@ public class Model {
         void done(Summary su);
     }
 
+    public interface UpdateStudentListenr {
+        void done(FirebaseError err);
+    }
+
+    public void updateStudent(Student st, UpdateStudentListenr listener) {
+        firebaseModel.updateStudent(st, listener);
+    }
+
     public void addStudent(Student st, AddStudentListener listener) {
         firebaseModel.addStudent(st, listener);
     }
@@ -53,6 +69,7 @@ public class Model {
 
     private Model() {
         firebaseModel = new ModelFirebase(StudApplication.getContext());
+        cloudinaryModel = new ModelCloudinary();
     }
 
     public interface GetStudentListener {
@@ -68,7 +85,7 @@ public class Model {
     }
 
     public interface SignupListener {
-        public void success(AuthData authData);
+        public void success(AuthData authData) throws IOException;
 
         public void fail(String msg);
     }
@@ -79,6 +96,10 @@ public class Model {
 
     public void login(String email, String pwd, final SignupListener listener) {
         firebaseModel.login(email, pwd, listener);
+    }
+
+    public String uploadPic(Bitmap pic, String name) throws IOException {
+        return cloudinaryModel.uploadPicture(pic, name);
     }
 
     public String getUserId(){

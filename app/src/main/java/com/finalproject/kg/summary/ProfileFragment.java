@@ -1,11 +1,18 @@
 package com.finalproject.kg.summary;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -29,6 +36,7 @@ public class ProfileFragment extends Fragment {
 
 
     private String mUserId;
+    Student stud;
 
     private OnFragmentInteractionListener mListener;
 
@@ -39,6 +47,63 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
         // Required empty public constructor
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit_profile:
+                //called when the up affordance/carat in actionbar is pressed
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                intent.putExtra("STUDENT_ID", stud.getId());
+                intent.putExtra("STUDENT_MAIL", stud.getEmailaddress());
+                intent.putExtra("STUDENT_NAME", stud.getName());
+                intent.putExtra("STUDENT_PASS", stud.password);
+                intent.putExtra("STUDENT_IMG", stud.getImageName());
+
+                startActivityForResult(intent, 1);
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                String returnedResult = data.getData().toString();
+
+                Model.instance().getStudent(new Model.GetStudentListener() {
+                    @Override
+                    public void done(Student st) {
+                        txtName.setText(st.getName());
+                        txtEmail.setText(st.getEmailaddress());
+                        txtPassword.setText(st.password);
+
+                        stud = st;
+                    }
+                });
+
+            }
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+
+        if (menu != null) {
+            menu.findItem(R.id.action_filter).setVisible(false);
+        }
+
+        inflater.inflate(R.menu.profile_menu, menu);
+    }
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -59,6 +124,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setHasOptionsMenu(true);
+        ((MainNotesActivity)getActivity()).hideFloatingActionButton();
+
         if (getArguments() != null) {
             mUserId = getArguments().getString(ARG_USER_ID);
         }
@@ -67,6 +136,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (container != null) {
+            container.removeAllViews();
+        }
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -81,6 +154,8 @@ public class ProfileFragment extends Fragment {
                 txtName.setText(st.getName());
                 txtEmail.setText(st.getEmailaddress());
                 txtPassword.setText(st.password);
+
+                stud = st;
             }
         });
 

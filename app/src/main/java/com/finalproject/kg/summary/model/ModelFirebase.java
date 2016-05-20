@@ -9,8 +9,13 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 
 /**
  * Created by Kobi on 07/05/2016.
@@ -22,6 +27,31 @@ public class ModelFirebase {
         Firebase.setAndroidContext(context);
         myFirebaseRef = new Firebase("https://dazzling-torch-343.firebaseio.com/");
     }
+
+    public void updateStudent(Student st, final Model.UpdateStudentListenr listener){
+        Firebase stRef = myFirebaseRef.child("Students").child(st.getId());
+        Map<String, Object> update = new HashMap<String, Object>();
+        update.put("emailaddress", st.getEmailaddress());
+        update.put("name", st.getName());
+        update.put("imageName", st.getImageName());
+//        update.put("password", st.password);
+
+
+
+
+        stRef.updateChildren(update, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                } else {
+                    System.out.println("Data saved successfully.");
+                    listener.done(firebaseError);
+                }
+            }
+        });
+
+        }
 
     public void getAllSummariesAsynch(final Model.GetSummaryListener listener) {
         Firebase  stRef = myFirebaseRef.child("Summaries");
@@ -90,7 +120,11 @@ public class ModelFirebase {
             myFirebaseRef.createUser(email, pwd, new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
-                listener.success(null);
+                try {
+                    listener.success(null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -105,7 +139,11 @@ public class ModelFirebase {
         myFirebaseRef.authWithPassword(email, pwd, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                listener.success(authData);
+                try {
+                    listener.success(authData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
