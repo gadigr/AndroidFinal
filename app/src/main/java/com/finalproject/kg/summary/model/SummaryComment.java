@@ -1,20 +1,32 @@
 package com.finalproject.kg.summary.model;
 
+import java.util.Calendar;
+
 /**
  * Created by Kobi on 20/05/2016.
  */
 public class SummaryComment {
-    private String Id;
+    private boolean Show;
     private String UserWriterId;
     private String Comment;
+    private Calendar DateTime;
 
     public SummaryComment()
     {
     }
 
-    public void setId(String Id)
+    public Calendar getDateTime() {
+        return DateTime;
+    }
+
+    public void setDateTime(Calendar DateTime)
     {
-        this.Id = Id;
+        this.DateTime = DateTime;
+    }
+
+    public void setShow(boolean Show)
+    {
+        this.Show = Show;
     }
 
     public void setUserWriterId(String UserWriterId)
@@ -27,9 +39,9 @@ public class SummaryComment {
         this.Comment = Comment;
     }
 
-    public String getId()
+    public boolean getShow()
     {
-        return Id;
+        return Show;
     }
 
     public String getUserWriterId()

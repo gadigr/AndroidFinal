@@ -44,6 +44,7 @@ public class ModelFirebase {
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
                     System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
                 } else {
                     System.out.println("Data saved successfully.");
                     listener.done(firebaseError);
@@ -104,6 +105,11 @@ public class ModelFirebase {
     }
 
     public void doLikeToSummary(Summary su, Model.doLikeToSummaryListener listener) {
+        Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
+        stRef.setValue(su);
+    }
+
+    public void addCommentToSummary(Summary su, Model.AddCommentListener listener) {
         Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
         stRef.setValue(su);
     }
