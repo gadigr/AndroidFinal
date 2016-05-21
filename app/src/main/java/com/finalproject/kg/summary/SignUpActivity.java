@@ -1,5 +1,6 @@
 package com.finalproject.kg.summary;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -51,6 +52,10 @@ public class SignUpActivity extends ActionBarActivity {
         iv = (ImageView) findViewById(R.id.ivSignUpImage);
         Button btnUpload = (Button) findViewById(R.id.btnUploadPicture);
 
+        final ProgressDialog dialog = new ProgressDialog(SignUpActivity.this);
+        dialog.setMessage("Signing up and logging in...");
+
+
         btnUpload.setOnClickListener(new View.OnClickListener() {
 
 
@@ -65,6 +70,7 @@ public class SignUpActivity extends ActionBarActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.show();
                 Model.instance().signeup(etEmail.getText().toString(), etPassword.getText().toString(), new Model.SignupListener() {
                     @Override
                     public void success(AuthData authData) {
@@ -81,7 +87,7 @@ public class SignUpActivity extends ActionBarActivity {
                                         Log.d("TAG", "add OK");
                                     }
                                 });
-
+                                dialog.dismiss();
                                 Intent intent = new Intent(getApplicationContext(), MainNotesActivity.class);
                                 startActivity(intent);
                             }
