@@ -1,5 +1,6 @@
 package com.finalproject.kg.summary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,8 @@ import com.finalproject.kg.summary.model.SummaryComment;
 import com.finalproject.kg.summary.model.SummaryLike;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,6 +115,7 @@ public class FeedListFragment extends Fragment {
             final Button feed_list_row_comment = (Button) convertView.findViewById(R.id.feed_list_row_comment);
             final TextView feed_list_row_comment_count = (TextView) convertView.findViewById(R.id.feed_list_row_comment_count);
             final ImageView feed_list_row_profile_image = (ImageView)convertView.findViewById(R.id.feed_list_row_profile_image);
+            final ImageView feed_list_row_summary_pictures = (ImageView)convertView.findViewById(R.id.feed_list_row_summary_image);
             convertView.setTag(position);
 
             final Summary su = data.get(position);
@@ -120,6 +124,22 @@ public class FeedListFragment extends Fragment {
             feed_list_row_date.setText(sdf.format(su.getDateTime().getTime()));
             feed_list_row_course.setText(su.getCourse());
             new LoadPictureTask().execute(feed_list_row_profile_image, su.getStudentId());
+
+            feed_list_row_summary_pictures.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    FragmentManager childFragMan = getChildFragmentManager();
+//                    FragmentTransaction childFragTrans = childFragMan.beginTransaction();
+//                    fragViewr.setImages(new String[] {su.getSummaryImage()});
+//                    childFragTrans.add(R.id.fragment, fragViewr);
+//                    childFragTrans.addToBackStack("B");
+//                    childFragTrans.commit();
+                    String[] pics = new String[] {su.getSummaryImage(), su.getSummaryImage(), su.getSummaryImage()};
+                    Intent i = new Intent(getActivity(), FullScreenViewActivity.class);
+                    i.putStringArrayListExtra("pics", new ArrayList<String>(Arrays.asList(pics)));
+                    getActivity().startActivity(i);
+                }
+            });
 
 
             // Count the number of the Comments
