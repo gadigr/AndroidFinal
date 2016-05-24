@@ -20,6 +20,8 @@ public class Model {
 
     private final static Model instance = new Model();
 
+    private Student mConnectedStud;
+
     ModelFirebase firebaseModel;
     ModelCloudinary cloudinaryModel;
 
@@ -85,8 +87,16 @@ public class Model {
         void done(Student st);
     }
 
-    public void getStudent(GetStudentListener listener) {
-        firebaseModel.getStudent(getUserId(), listener);
+    public void getStudent(final GetStudentListener listener) {
+        firebaseModel.getStudent(getUserId(), new GetStudentListener() {
+            @Override
+            public void done(Student st) {
+                if (mConnectedStud == null) {
+                    mConnectedStud = st;
+                }
+                listener.done(st);
+            }
+        });
     }
 
     public void getStudentById(String id, Model.GetStudentListener listener) {
@@ -113,6 +123,20 @@ public class Model {
 
     public Bitmap getPic(String name) throws IOException {
         return cloudinaryModel.getPicture(name);
+    }
+
+    public Student getConnectedStudent() {
+
+        if (mConnectedStud == null) {
+            firebaseModel.getStudent(getUserId(), new GetStudentListener() {
+                @Override
+                public void done(Student st) {
+                        mConnectedStud = st;
+                }
+            });
+        }
+
+        return mConnectedStud;
     }
 
     public String getUserId(){

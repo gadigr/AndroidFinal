@@ -95,6 +95,7 @@ public class ModelFirebase {
                 listener.done(null);
             }
         });
+
     }
 
     public void addStudent(Student st, Model.AddStudentListener listener) {

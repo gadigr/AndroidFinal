@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.finalproject.kg.summary.model.LoadPictureTask;
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Summary;
 import com.finalproject.kg.summary.model.SummaryComment;
@@ -109,6 +111,7 @@ public class FeedListFragment extends Fragment {
             final TextView feed_list_row_like_count = (TextView) convertView.findViewById(R.id.feed_list_row_like_count);
             final Button feed_list_row_comment = (Button) convertView.findViewById(R.id.feed_list_row_comment);
             final TextView feed_list_row_comment_count = (TextView) convertView.findViewById(R.id.feed_list_row_comment_count);
+            final ImageView feed_list_row_profile_image = (ImageView)convertView.findViewById(R.id.feed_list_row_profile_image);
             convertView.setTag(position);
 
             final Summary su = data.get(position);
@@ -116,6 +119,7 @@ public class FeedListFragment extends Fragment {
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
             feed_list_row_date.setText(sdf.format(su.getDateTime().getTime()));
             feed_list_row_course.setText(su.getCourse());
+            new LoadPictureTask().execute(feed_list_row_profile_image, su.getStudentId());
 
 
             // Count the number of the Comments

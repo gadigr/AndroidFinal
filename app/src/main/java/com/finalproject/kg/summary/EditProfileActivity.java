@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.finalproject.kg.summary.model.LoadPictureTask;
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
 import com.firebase.client.FirebaseError;
@@ -37,25 +38,25 @@ public class EditProfileActivity extends AppCompatActivity {
     ImageView imImage;
     InputStream in;
 
-    private class GetPicTask extends AsyncTask<String, Void, Bitmap> {
-        protected Bitmap doInBackground(String... picName) {
-            Bitmap bmp = null;
-            try {
-                bmp = Model.instance().getPic(picName[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-
-        protected void onProgressUpdate(Integer... progress) {
-//            setProgressPercent(progress[0]);
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            imImage.setImageBitmap(result);
-        }
-    }
+//    private class GetPicTask extends AsyncTask<String, Void, Bitmap> {
+//        protected Bitmap doInBackground(String... picName) {
+//            Bitmap bmp = null;
+//            try {
+//                bmp = Model.instance().getPic(picName[0]);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return bmp;
+//        }
+//
+//        protected void onProgressUpdate(Integer... progress) {
+////            setProgressPercent(progress[0]);
+//        }
+//
+//        protected void onPostExecute(Bitmap result) {
+//            imImage.setImageBitmap(result);
+//        }
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,7 +85,7 @@ public class EditProfileActivity extends AppCompatActivity {
         edMail.setText((String) getIntent().getExtras().get("STUDENT_MAIL"));
 
 //            imImage.setImageBitmap(Model.instance().getPic ((String) getIntent().getExtras().get("STUDENT_IMG")));
-            new GetPicTask().execute((String) getIntent().getExtras().get("STUDENT_IMG"));
+            new LoadPictureTask().execute(imImage, (String) getIntent().getExtras().get("STUDENT_IMG"));
 
 
         ((Button)findViewById(R.id.btnChangePic)).setOnClickListener(new View.OnClickListener() {

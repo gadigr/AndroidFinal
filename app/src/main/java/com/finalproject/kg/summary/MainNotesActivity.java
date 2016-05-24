@@ -41,6 +41,12 @@ public class MainNotesActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction().commit();
+
+
+
         fabBtn = (FloatingActionButton) findViewById(R.id.fab);
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,16 +67,16 @@ public class MainNotesActivity extends AppCompatActivity
                 sc.setComment("");
                 sc.setDateTime(cc);
                 lstComment.add(sc);
-                Summary ss = new Summary("","Stud Name", Model.instance().getUserId(), "image2", cc,"Algebra",lstLike,lstComment);
+                Summary ss = new Summary("",Model.instance().getConnectedStudent().getName(), Model.instance().getUserId(), "image2", cc,"Algebra",lstLike,lstComment);
                 Model.instance().addSummary(ss,new Model.AddSummaryListener() {
                     @Override
                     public void done(Summary su) {
                         Log.d("TAG", "Wirte New Feed ");
                     }
                 });
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
 
             }
         });

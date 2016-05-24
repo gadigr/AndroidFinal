@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.finalproject.kg.summary.model.LoadPictureTask;
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
 
@@ -90,7 +91,7 @@ public class ProfileFragment extends Fragment {
                         txtEmail.setText(st.getEmailaddress());
                         txtPassword.setText(st.password);
 
-                        new GetPicTask().execute(st.getImageName());
+                        new LoadPictureTask().execute(imView, st.getImageName());
 
 //                        try {
 //                            imView.setImageBitmap(Model.instance().getPic(st.getImageName()));
@@ -169,7 +170,7 @@ public class ProfileFragment extends Fragment {
                 txtName.setText(st.getName());
                 txtEmail.setText(st.getEmailaddress());
                 txtPassword.setText(st.password);
-                new GetPicTask().execute(st.getImageName());
+                new LoadPictureTask().execute(imView, st.getImageName());
 
 //                try {
 //                    imView.setImageBitmap(Model.instance().getPic(st.getImageName()));
@@ -184,25 +185,25 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
-    private class GetPicTask extends AsyncTask<String, Void, Bitmap> {
-        protected Bitmap doInBackground(String... picName) {
-            Bitmap bmp = null;
-            try {
-                bmp = Model.instance().getPic(picName[0]);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-
-        protected void onProgressUpdate(Integer... progress) {
-//            setProgressPercent(progress[0]);
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            imView.setImageBitmap(result);
-        }
-    }
+//    private class GetPicTask extends AsyncTask<String, Void, Bitmap> {
+//        protected Bitmap doInBackground(String... picName) {
+//            Bitmap bmp = null;
+//            try {
+//                bmp = Model.instance().getPic(picName[0]);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return bmp;
+//        }
+//
+//        protected void onProgressUpdate(Integer... progress) {
+////            setProgressPercent(progress[0]);
+//        }
+//
+//        protected void onPostExecute(Bitmap result) {
+//            imView.setImageBitmap(result);
+//        }
+//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
