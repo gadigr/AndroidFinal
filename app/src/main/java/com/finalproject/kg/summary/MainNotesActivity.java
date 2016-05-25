@@ -124,7 +124,18 @@ public class MainNotesActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Log.d("TAG", "clickkkk " + id);
 
+        Fragment fragment = null;
+        Class fragmentClass = CourseListFragment.class;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragment).addToBackStack(null).commit();
 
         return super.onOptionsItemSelected(item);
     }

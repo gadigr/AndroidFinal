@@ -34,8 +34,16 @@ public class Model {
         public void onCancel();
     }
 
+    public interface GetCourseListener{
+        public void onResult(Student st);
+        public void onCancel();
+    }
+
     public void getAllSummariesAsynch(GetSummaryListener listener){
         firebaseModel.getAllSummariesAsynch(listener);
+    }
+    public void getCourseAsynch(GetCourseListener listener) {
+        firebaseModel.getCourseAsynch(listener);
     }
 
     public interface AddStudentListener {
@@ -43,6 +51,10 @@ public class Model {
     }
 
     public interface doLikeToSummaryListener {
+        void done();
+    }
+
+    public interface UpdateCourseListener {
         void done();
     }
 
@@ -60,6 +72,10 @@ public class Model {
 
     public void updateStudent(Student st, UpdateStudentListenr listener) {
         firebaseModel.updateStudent(st, listener);
+    }
+
+    public void updateCourse(Student st, Model.UpdateCourseListener listener) {
+        firebaseModel.updateCourse(st, listener);
     }
 
     public void addStudent(Student st, AddStudentListener listener) {
