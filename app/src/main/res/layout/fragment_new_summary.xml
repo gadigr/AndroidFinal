@@ -1,0 +1,73 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.finalproject.kg.summary.NewSummaryFragment"
+    android:background="@android:color/background_light">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Course:"
+                android:id="@+id/textView8" />
+
+            <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_summary_spinner_course" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="170dp"
+                android:layout_height="200dp"
+                android:id="@+id/new_summary_image"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/profile"
+                android:layout_gravity="center_horizontal"
+                android:paddingEnd="0dp"
+                android:paddingStart="0dp"
+                android:cropToPadding="false" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload Summary"
+                android:id="@+id/new_summary_image_upload"
+                android:layout_centerInParent="true"
+                android:layout_alignParentBottom="true"
+                android:background="#af2b2b2b"
+                android:textColor="#ffffff"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp" />
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:text="Upload"
+            android:layout_gravity="center_horizontal"
+            android:background="#3749b5"
+            android:textSize="25dp"
+            android:textColor="#ffffff"
+            android:layout_marginTop="20dp"
+            android:id="@+id/new_summary_upload_button" />
+    </LinearLayout>
+</FrameLayout>

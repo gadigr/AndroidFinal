@@ -219,6 +219,7 @@ public class FeedListFragment extends Fragment {
                  @Override
                  public void onClick(View v) {
                      //child fragment
+                     fragB = new CommentsListFragment();
                      FragmentManager childFragMan = getChildFragmentManager();
                      FragmentTransaction childFragTrans = childFragMan.beginTransaction();
                      fragB.setSummary(su);
