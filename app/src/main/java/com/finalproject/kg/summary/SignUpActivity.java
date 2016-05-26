@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -40,7 +41,7 @@ public class SignUpActivity extends ActionBarActivity {
     Bitmap pic;
     ImageView iv;
     File photoFile;
-        InputStream in;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,16 @@ public class SignUpActivity extends ActionBarActivity {
                         Model.instance().login(etEmail.getText().toString(), etPassword.getText().toString(), new Model.SignupListener() {
                             @Override
                             public void success(AuthData authData) throws IOException {
+
+                                Bitmap imageBitmap = ((BitmapDrawable)iv.getDrawable()).getBitmap();
+                                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                                imageBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+                                byte[] bitmapdata = bos.toByteArray();
+                                InputStream in = new ByteArrayInputStream(bitmapdata);
+
                                 Model.instance().uploadPic(in, authData.getUid());
+
+
                                 List<Course> lstCourse = new LinkedList<Course>();
                                 lstCourse.add(new Course("null"));
                                 Student st = new Student(authData.getUid(), etFullName.getText().toString(),etEmail.getText().toString(),authData.getUid(),lstCourse);
@@ -134,11 +144,6 @@ public class SignUpActivity extends ActionBarActivity {
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 iv.setImageBitmap(imageBitmap);
-
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-                byte[] bitmapdata = bos.toByteArray();
-                in = new ByteArrayInputStream(bitmapdata);
 
 
 
