@@ -1,5 +1,7 @@
 package com.finalproject.kg.summary;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -34,6 +36,8 @@ public class MainNotesActivity extends AppCompatActivity
     DrawerLayout mDrawer;
     FloatingActionButton fabBtn;
 
+    Fragment fragmentNewSummary = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,33 +55,21 @@ public class MainNotesActivity extends AppCompatActivity
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Calendar cc = Calendar.getInstance();
-                cc.set(cc.get(Calendar.YEAR), cc.get(Calendar.MONTH),cc.get(Calendar.DAY_OF_MONTH) ,  cc.get(Calendar.HOUR),  cc.get(Calendar.MINUTE),  cc.get(Calendar.SECOND));
-                List<SummaryLike> lstLike = new LinkedList<SummaryLike>();
-                SummaryLike sl = new SummaryLike();
-                sl.setUserId(Model.instance().getUserId());
-                sl.setLike(false);
-                lstLike.add(sl);
-
-                List<SummaryComment> lstComment = new LinkedList<SummaryComment>();
-                SummaryComment sc = new SummaryComment();
-                sc.setShow(false);
-                sc.setUserWriterId(Model.instance().getUserId());
-                sc.setComment("");
-                sc.setDateTime(cc);
-                lstComment.add(sc);
-                Summary ss = new Summary("",Model.instance().getConnectedStudent().getName(), Model.instance().getUserId(), "image2", cc,"Algebra",lstLike,lstComment);
-                Model.instance().addSummary(ss,new Model.AddSummaryListener() {
-                    @Override
-                    public void done(Summary su) {
-                        Log.d("TAG", "Wirte New Feed ");
-                    }
-                });
+                Model.instance().getConnectedStudent();
 //
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
+                //Fragment fragment = null;
+                Class fragmentClass = NewSummaryFragment.class;
+                try {
+                    fragmentNewSummary = (Fragment) fragmentClass.newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragmentNewSummary).addToBackStack(null).commit();
             }
         });
 
