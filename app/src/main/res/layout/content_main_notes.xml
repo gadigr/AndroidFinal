@@ -9,16 +9,25 @@
     tools:context="com.finalproject.kg.summary.MainNotesActivity"
     tools:showIn="@layout/app_bar_main_notes">
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/main_frag_container">
+        android:layout_height="match_parent">
 
-        <fragment
-            android:layout_width="wrap_content"
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.finalproject.kg.summary.FeedListFragment"
-            android:id="@+id/fragment" />
-    </FrameLayout>
+            android:id="@+id/content_main_notes_pb"
+            android:visibility="gone"
+            android:indeterminate="true" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/main_frag_container">
+
+        </FrameLayout>
+    </LinearLayout>
 
 </RelativeLayout>

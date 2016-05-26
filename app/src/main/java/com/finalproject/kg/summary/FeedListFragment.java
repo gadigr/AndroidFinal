@@ -43,7 +43,7 @@ public class FeedListFragment extends Fragment {
     ProgressBar pbLoading;
     View view;
 
-    CommentsListFragment fragB = new CommentsListFragment();
+    Fragment fragment = null;
 
     public final List<Course> lstCourse = new LinkedList<Course>();
 
@@ -61,6 +61,13 @@ public class FeedListFragment extends Fragment {
 
         return view;
     }
+
+    public FragmentManager fragmentManager1;
+    public void getFragmentManager(FragmentManager fragmentManager)
+    {
+        fragmentManager1 = fragmentManager;
+    }
+
 
     public void LoadCourse() {
         Model.instance().getCourseAsynch(new Model.GetCourseListener() {
@@ -100,8 +107,11 @@ public class FeedListFragment extends Fragment {
                 Collections.reverse(lst);
                 data = lst;
                 adapter.notifyDataSetChanged();
-                fragB.UpdateData();
-                Snackbar.make(view, "New Post", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                if(fragment!=null)
+                {
+                    ((CommentsListFragment)fragment).UpdateData();
+                }
+                //Snackbar.make(view, "New Post", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 pbLoading.setVisibility(View.GONE);
             }
 
@@ -164,12 +174,6 @@ public class FeedListFragment extends Fragment {
             feed_list_row_summary_pictures.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    FragmentManager childFragMan = getChildFragmentManager();
-//                    FragmentTransaction childFragTrans = childFragMan.beginTransaction();
-//                    fragViewr.setImages(new String[] {su.getSummaryImage()});
-//                    childFragTrans.add(R.id.fragment, fragViewr);
-//                    childFragTrans.addToBackStack("B");
-//                    childFragTrans.commit();
                     String[] pics = new String[] {su.getSummaryImage(), su.getSummaryImage(), su.getSummaryImage()};
                     Intent i = new Intent(getActivity(), FullScreenViewActivity.class);
                     i.putStringArrayListExtra("pics", new ArrayList<String>(Arrays.asList(pics)));
@@ -218,13 +222,16 @@ public class FeedListFragment extends Fragment {
             feed_list_row_comment.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
-                     //child fragment
-                     FragmentManager childFragMan = getChildFragmentManager();
-                     FragmentTransaction childFragTrans = childFragMan.beginTransaction();
-                     fragB.setSummary(su);
-                     childFragTrans.add(R.id.fragment, fragB);
-                     childFragTrans.addToBackStack("B");
-                     childFragTrans.commit();
+                     Class fragmentClass;
+                     fragmentClass = CommentsListFragment.class;
+                     try {
+                         fragment = (Fragment) fragmentClass.newInstance();
+                         ((CommentsListFragment)fragment).setSummary(su);
+                     } catch (Exception e) {
+                         e.printStackTrace();
+                     }
+                     Global.instance().getFabBtn().setVisibility(View.GONE);
+                     fragmentManager1.beginTransaction().replace(R.id.main_frag_container, fragment).addToBackStack(null).commit();
                  }
              });
 

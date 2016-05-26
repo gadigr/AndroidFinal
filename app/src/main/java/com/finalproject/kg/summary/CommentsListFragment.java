@@ -2,6 +2,7 @@ package com.finalproject.kg.summary;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;

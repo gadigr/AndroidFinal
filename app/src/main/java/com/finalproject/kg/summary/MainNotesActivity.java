@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Summary;
@@ -45,13 +46,26 @@ public class MainNotesActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        ProgressBar content_main_notes_pb = (ProgressBar) findViewById(R.id.content_main_notes_pb);
+        content_main_notes_pb.setVisibility(View.VISIBLE);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
+        //fragmentManager.beginTransaction().commit();
 
-        fragmentManager.beginTransaction().commit();
+        Fragment fragment = null;
+        Class fragmentClass;
+        fragmentClass = FeedListFragment.class;
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-
+        ((FeedListFragment)fragment).getFragmentManager(fragmentManager);
+        fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragment).commit();
 
         fabBtn = (FloatingActionButton) findViewById(R.id.fab);
+        Global.instance().setFabBtn(fabBtn);
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +95,7 @@ public class MainNotesActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        content_main_notes_pb.setVisibility(View.GONE);
     }
 
     public void showFloatingActionButton() {
@@ -98,6 +112,7 @@ public class MainNotesActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+            fabBtn.setVisibility(View.VISIBLE);
             super.onBackPressed();
         }
     }
@@ -115,7 +130,7 @@ public class MainNotesActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        fabBtn.setVisibility(View.GONE);
         Log.d("TAG", "clickkkk " + id);
 
         Fragment fragment = null;
@@ -152,6 +167,7 @@ public class MainNotesActivity extends AppCompatActivity
                 fragmentClass = FeedListFragment.class;
                 break;
             case R.id.nav_profile:
+                Global.instance().getFabBtn().setVisibility(View.GONE);
                 fragmentClass = ProfileFragment.class;
                 break;
             default:
@@ -178,3 +194,4 @@ public class MainNotesActivity extends AppCompatActivity
         return true;
     }
 }
+
