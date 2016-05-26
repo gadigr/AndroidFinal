@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.finalproject.kg.summary.model.Course;
 import com.finalproject.kg.summary.model.LoadPictureTask;
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
@@ -27,6 +28,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -107,7 +110,12 @@ public class EditProfileActivity extends AppCompatActivity {
         ((Button)findViewById(R.id.buttonSave)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Student st = new Student(mUserId, edName.getText().toString(), edMail.getText().toString(), mUserId);
+
+
+                // Change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                List<Course> lstCourse = new LinkedList<Course>();
+
+                Student st = new Student(mUserId, edName.getText().toString(), edMail.getText().toString(), mUserId,lstCourse);
                 try {
                     Model.instance().uploadPic(in, mUserId);
                 } catch (IOException e) {

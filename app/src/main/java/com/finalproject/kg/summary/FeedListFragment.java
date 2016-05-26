@@ -3,6 +3,7 @@ package com.finalproject.kg.summary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,8 +20,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.finalproject.kg.summary.model.Course;
 import com.finalproject.kg.summary.model.LoadPictureTask;
 import com.finalproject.kg.summary.model.Model;
+import com.finalproject.kg.summary.model.Student;
 import com.finalproject.kg.summary.model.Summary;
 import com.finalproject.kg.summary.model.SummaryComment;
 import com.finalproject.kg.summary.model.SummaryLike;
@@ -42,6 +45,8 @@ public class FeedListFragment extends Fragment {
 
     CommentsListFragment fragB = new CommentsListFragment();
 
+    public final List<Course> lstCourse = new LinkedList<Course>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +54,7 @@ public class FeedListFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_feed_list, container, false);
         list = (ListView) view.findViewById(R.id.feed_listview);
         pbLoading = (ProgressBar) view.findViewById(R.id.pbLoading);
+        LoadCourse();
         LoadAllSummary();
         adapter = new MyAddapter();
         list.setAdapter(adapter);
@@ -56,13 +62,43 @@ public class FeedListFragment extends Fragment {
         return view;
     }
 
+    public void LoadCourse() {
+        Model.instance().getCourseAsynch(new Model.GetCourseListener() {
+            @Override
+            public void onResult(Student st) {
+                lstCourse.clear();
+                lstCourse.addAll(st.getLstCourse());
+                LoadAllSummary();
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+    }
+
     public void LoadAllSummary() {
         pbLoading.setVisibility(View.VISIBLE);
         Model.instance().getAllSummariesAsynch(new Model.GetSummaryListener() {
             @Override
             public void onResult(List<Summary> summaries) {
-                data = summaries;
-                Collections.reverse(data);
+                List<Summary> lst = new LinkedList<Summary>();
+                for (Summary currSm : summaries) {
+                    boolean bShowCourse = false;
+                    for (Course currCourse : lstCourse) {
+                        if (currSm.getCourse().equals(currCourse.getCourseName())) {
+                            bShowCourse = true;
+                        }
+                    }
+
+                    if(bShowCourse)
+                    {
+                        lst.add(currSm);
+                    }
+                }
+                Collections.reverse(lst);
+                data = lst;
                 adapter.notifyDataSetChanged();
                 fragB.UpdateData();
                 Snackbar.make(view, "New Post", Snackbar.LENGTH_LONG).setAction("Action", null).show();

@@ -54,6 +54,25 @@ public class ModelFirebase {
 
         }
 
+    public void getCourseAsynch(final Model.GetCourseListener listener) {
+        Firebase  stRef = myFirebaseRef.child("Students").child(getUserId());
+        // Attach an listener to read the data at our posts reference
+        //stRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        stRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Student st = snapshot.getValue(Student.class);
+                listener.onResult(st);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                System.out.println("The read failed: " + firebaseError.getMessage());
+                listener.onCancel();
+            }
+        });
+    }
+
     public void getAllSummariesAsynch(final Model.GetSummaryListener listener) {
         Firebase  stRef = myFirebaseRef.child("Summaries");
         // Attach an listener to read the data at our posts reference
@@ -113,6 +132,11 @@ public class ModelFirebase {
     public void addCommentToSummary(Summary su, Model.AddCommentListener listener) {
         Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
         stRef.setValue(su);
+    }
+
+    public void updateCourse(Student st, Model.UpdateCourseListener listener) {
+        Firebase stRef = myFirebaseRef.child("Students").child(st.getId());
+        stRef.setValue(st);
     }
 
     public void addSummary(Summary su, Model.AddSummaryListener listener) {

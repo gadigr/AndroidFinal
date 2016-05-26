@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.finalproject.kg.summary.model.Course;
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
 import com.firebase.client.AuthData;
@@ -28,6 +29,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SignUpActivity extends ActionBarActivity {
@@ -79,7 +81,9 @@ public class SignUpActivity extends ActionBarActivity {
                             @Override
                             public void success(AuthData authData) throws IOException {
                                 Model.instance().uploadPic(in, authData.getUid());
-                                Student st = new Student(authData.getUid(), etFullName.getText().toString(),etEmail.getText().toString(),authData.getUid());
+                                List<Course> lstCourse = new LinkedList<Course>();
+                                lstCourse.add(new Course("null"));
+                                Student st = new Student(authData.getUid(), etFullName.getText().toString(),etEmail.getText().toString(),authData.getUid(),lstCourse);
                                 st.password = etPassword.getText().toString();
                                 Model.instance().addStudent(st, new Model.AddStudentListener() {
                                     @Override
