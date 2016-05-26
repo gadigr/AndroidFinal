@@ -9,55 +9,85 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LogInActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/pbLoading"
-            android:visibility="gone"
-            android:indeterminate="true"/>
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <EditText
+            <ImageView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:layout_above="@+id/linearLayout"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/only_logo"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Log In"
+                android:id="@+id/textView5"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#4050a3"
+                android:textSize="30dp" />
+
+            <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Email: "
+            android:id="@+id/textView2" />
+
+            <EditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/etEmail"
                 android:hint="email"
                 android:text="kgSummary@gmail.com" />
+        </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Password: "
+            android:id="@+id/textView3" />
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/etPassword"
                 android:hint="password"
                 android:text="kg987654" />
+        </LinearLayout>
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
                 android:text="Log In"
-                android:id="@+id/btnLogIn" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sign Up"
-                android:id="@+id/btnSignUp" />
+                android:id="@+id/btnLogIn"
+                android:layout_gravity="center_horizontal"
+                android:ellipsize="none"
+                android:background="#3749b5"
+                android:layout_margin="5dp"
+                android:textColor="#ffffff"
+                android:textSize="25dp" />
 
         </LinearLayout>
-    </LinearLayout>
 
 </RelativeLayout>

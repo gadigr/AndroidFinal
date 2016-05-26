@@ -9,61 +9,122 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SignUpActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:ems="10"
-                android:id="@+id/etEmail"
-                android:hint="email" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:ems="10"
-                android:id="@+id/etPassword"
-                android:hint="password" />
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/etFullName"
-                android:hint="full name" />
+            android:layout_weight="1"
+            android:weightSum="1">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/ivSignUpImage"
-                android:layout_centerHorizontal="true" />
-            <Button
+                android:layout_width="63dp"
+                android:layout_height="101dp"
+                android:id="@+id/imageView4"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/only_logo" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upload Picture"
-                android:id="@+id/btnUploadPicture" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Sign Up"
+                android:id="@+id/textView7"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#4050a3"
+                android:textSize="30dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Email: "
+            android:id="@+id/textView2" />
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:id="@+id/etEmail"
+                android:hint="Enter Email..." />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Password: "
+            android:id="@+id/textView3" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:id="@+id/etPassword"
+                android:hint="Enter Password..." />
+        </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Full Name: "
+            android:id="@+id/textView4" />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/etFullName"
+                android:hint="Enter Full Name..." />
+        </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="0.18">
+            <ImageView
+                android:layout_width="170dp"
+                android:layout_height="200dp"
+                android:id="@+id/ivSignUpImage"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/profile"
+                android:layout_gravity="center_horizontal"
+                android:paddingEnd="0dp"
+                android:paddingStart="0dp"
+                android:cropToPadding="false" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Picture"
+                    android:id="@+id/btnUploadPicture"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="#af2b2b2b"
+                    android:textColor="#ffffff"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
+            </RelativeLayout>
+
+            <Button
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                android:text="Sign Up"
+                android:id="@+id/btnSignUp"
+                android:layout_gravity="center_horizontal"
+                android:background="#3749b5"
+                android:textSize="25dp"
+                android:textColor="#ffffff"
+                android:layout_marginTop="20dp" />
         </LinearLayout>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:id="@+id/btnSignUp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign In"
-            android:id="@+id/btnSignIn" />
-    </LinearLayout>
 </RelativeLayout>
