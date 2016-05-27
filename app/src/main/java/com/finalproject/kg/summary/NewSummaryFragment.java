@@ -92,6 +92,8 @@ public class NewSummaryFragment extends Fragment {
                 Log.d("TAG", "Wirte New Feed ");
             }
         });
+
+        Global.instance().getFabBtn().setVisibility(View.VISIBLE);
     }
 
 }

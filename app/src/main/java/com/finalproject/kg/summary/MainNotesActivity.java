@@ -69,6 +69,7 @@ public class MainNotesActivity extends AppCompatActivity
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                fabBtn.setVisibility(View.GONE);
                 Model.instance().getConnectedStudent();
 //
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -112,6 +113,10 @@ public class MainNotesActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+
+            if(!Global.instance().getItem().isVisible()) {
+                Global.instance().getItem().setVisible(true);
+            }
             fabBtn.setVisibility(View.VISIBLE);
             super.onBackPressed();
         }
@@ -130,6 +135,11 @@ public class MainNotesActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        if(id == R.id.action_filter) {
+            Global.instance().setItem(item);
+
+            item.setVisible(false);
+        }
         fabBtn.setVisibility(View.GONE);
         Log.d("TAG", "clickkkk " + id);
 
