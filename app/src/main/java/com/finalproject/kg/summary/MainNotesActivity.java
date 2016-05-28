@@ -1,10 +1,8 @@
 package com.finalproject.kg.summary;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -19,40 +17,38 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
-
 import com.finalproject.kg.summary.model.Model;
-import com.finalproject.kg.summary.model.Summary;
-import com.finalproject.kg.summary.model.SummaryComment;
-import com.finalproject.kg.summary.model.SummaryLike;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
+//**************************************************
+// Main Notes Activity
+// This is the main notes activity
+// Kobi hay (305623969) & Gadi gomaz (305296139)
+//**************************************************
 public class MainNotesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    // Variable of the class
     DrawerLayout mDrawer;
     FloatingActionButton fabBtn;
-
     Fragment fragmentNewSummary = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_notes);
+
+        // Get the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Get the ProgressBar
         ProgressBar content_main_notes_pb = (ProgressBar) findViewById(R.id.content_main_notes_pb);
+
+        // Show the Progress Bar -> loading
         content_main_notes_pb.setVisibility(View.VISIBLE);
 
+        // Get the Support Fragment Manager
         FragmentManager fragmentManager = getSupportFragmentManager();
-        //fragmentManager.beginTransaction().commit();
-
         Fragment fragment = null;
         Class fragmentClass;
         fragmentClass = FeedListFragment.class;
@@ -62,21 +58,25 @@ public class MainNotesActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+        // Set visible the feed fragment
         ((FeedListFragment)fragment).getFragmentManager(fragmentManager);
         fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragment).commit();
 
+        // Get the fab button
         fabBtn = (FloatingActionButton) findViewById(R.id.fab);
+
+        // Save the fab button in the global class
         Global.instance().setFabBtn(fabBtn);
+
+        // On click the fab button
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Hide the fab button
                 fabBtn.setVisibility(View.GONE);
-                Model.instance().getConnectedStudent();
-//
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
 
-                //Fragment fragment = null;
+                // Get the Connected Student
+                Model.instance().getConnectedStudent();
                 Class fragmentClass = NewSummaryFragment.class;
                 try {
                     fragmentNewSummary = (Fragment) fragmentClass.newInstance();
@@ -84,17 +84,20 @@ public class MainNotesActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
 
+                // Over to the new summary fragment
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_frag_container, fragmentNewSummary).addToBackStack(null).commit();
             }
         });
 
+        // Get the Drawer layout
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        // Set the  Navigation On Click Listener
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,19 +112,26 @@ public class MainNotesActivity extends AppCompatActivity
             }
         });
 
+        // Get the navigation View
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Hide the Progress Bar -> finish loading
         content_main_notes_pb.setVisibility(View.GONE);
     }
 
+    // Show the Floating Action Button
     public void showFloatingActionButton() {
         fabBtn.show();
     };
 
+    // Hide the Floating Action Button
     public void hideFloatingActionButton() {
         fabBtn.hide();
     };
 
+
+    // On click Back
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -129,45 +139,54 @@ public class MainNotesActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         }
         else if (getSupportFragmentManager().getBackStackEntryCount()>0) {
+            // Go out the fragment
             getFragmentManager().popBackStack();
 
-
+            // If the item dont show
             if(!Global.instance().getItem().isVisible()) {
                 Global.instance().getItem().setVisible(true);
 
             }
+
+            // Show the fab btn
             fabBtn.setVisibility(View.VISIBLE);
             super.onBackPressed();
         }
     }
 
+    // on Activity Result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    // On create the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_notes, menu);
         Global.instance().setItem(menu.findItem(R.id.action_filter));
         return true;
     }
 
+    // On item in the menu selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        // if this is the course filter
         if(id == R.id.action_filter) {
 
-
+            // Hide the course button
             item.setVisible(false);
         }
-        fabBtn.setVisibility(View.GONE);
-        Log.d("TAG", "clickkkk " + id);
 
+        // Hide the fab btn
+        fabBtn.setVisibility(View.GONE);
+
+        // Show the main Course list fragment
         Fragment fragment = null;
         Class fragmentClass = CourseListFragment.class;
         try {
@@ -182,14 +201,10 @@ public class MainNotesActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    // `onPostCreate` called when activity start-up is complete after `onStart()`
-    // NOTE! Make sure to override the method with only a single `Bundle` argument
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

@@ -2,8 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CommentsListFragment"
-    android:background="@android:color/darker_gray">
+    tools:context=".CommentsListFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -48,8 +47,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/comments_list_add_comment" />
+                android:text="Add Comment"
+                android:id="@+id/comments_list_add_comment"
+                android:layout_gravity="center_horizontal"
+                android:ellipsize="none"
+                android:background="#3749b5"
+                android:layout_margin="5dp"
+                android:textColor="#ffffff"
+                android:textSize="10dp" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

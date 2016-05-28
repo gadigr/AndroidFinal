@@ -1,17 +1,12 @@
 package com.finalproject.kg.summary;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,56 +15,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.finalproject.kg.summary.model.LoadPictureTask;
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Student;
 
-import java.io.IOException;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ProfileFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+//**************************************************
+// Profile Fragment
+// This Fragment show the user profile
+// Kobi hay (305623969) & Gadi gomaz (305296139)
+//**************************************************
 public class ProfileFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+    // Variable of the class
     private static final String ARG_USER_ID = "userid";
-
-
     private String mUserId;
     Student stud;
-
     private OnFragmentInteractionListener mListener;
-
     TextView txtName;
     TextView txtEmail;
     TextView txtPassword;
     ImageView imView;
 
-    public ProfileFragment() {
-        // Required empty public constructor
-    }
+    // Empty Constructor
+    public ProfileFragment() {}
 
+    // This function show the button on the menu
     public void showDrawerButton() {
         if (getActivity() instanceof AppCompatActivity) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
-//        mActionBarDrawerToggle.syncState();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_edit_profile:
-                //called when the up affordance/carat in actionbar is pressed
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
+                // Start new intent with param
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 intent.putExtra("STUDENT_ID", stud.getId());
                 intent.putExtra("STUDENT_MAIL", stud.getEmailaddress());
@@ -77,6 +60,7 @@ public class ProfileFragment extends Fragment {
                 intent.putExtra("STUDENT_PASS", stud.password);
                 intent.putExtra("STUDENT_IMG", stud.getImageName());
 
+                // Start the activity
                 startActivityForResult(intent, 1);
                 return true;
         }
@@ -88,10 +72,14 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // If the request code is 1
         if (requestCode == 1) {
+
+            // If res code is ok
             if (resultCode == Activity.RESULT_OK) {
                 String returnedResult = data.getData().toString();
 
+                // call to function to get the student
                 Model.instance().getStudent(new Model.GetStudentListener() {
                     @Override
                     public void done(Student st)  {
@@ -100,14 +88,6 @@ public class ProfileFragment extends Fragment {
                         txtPassword.setText(st.password);
 
                         new LoadPictureTask().execute(imView, st.getImageName());
-
-//                        try {
-//                            imView.setImageBitmap(Model.instance().getPic(st.getImageName()));
-//                        }
-//                        catch (IOException err) {
-//
-//                        }
-
                         stud = st;
                     }
                 });
@@ -118,8 +98,6 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-
         if (menu != null) {
             menu.findItem(R.id.action_filter).setVisible(false);
         }
@@ -127,16 +105,7 @@ public class ProfileFragment extends Fragment {
         inflater.inflate(R.menu.profile_menu, menu);
     }
 
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param userId Parameter 1.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    // On create the profile fragment
     public static ProfileFragment newInstance(String userId) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -179,13 +148,6 @@ public class ProfileFragment extends Fragment {
                 txtEmail.setText(st.getEmailaddress());
                 txtPassword.setText(st.password);
                 new LoadPictureTask().execute(imView, st.getImageName());
-
-//                try {
-//                    imView.setImageBitmap(Model.instance().getPic(st.getImageName()));
-//                }
-//                catch (IOException err) {
-//
-//                }
                 stud = st;
             }
         });
@@ -193,27 +155,6 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
-//    private class GetPicTask extends AsyncTask<String, Void, Bitmap> {
-//        protected Bitmap doInBackground(String... picName) {
-//            Bitmap bmp = null;
-//            try {
-//                bmp = Model.instance().getPic(picName[0]);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return bmp;
-//        }
-//
-//        protected void onProgressUpdate(Integer... progress) {
-////            setProgressPercent(progress[0]);
-//        }
-//
-//        protected void onPostExecute(Bitmap result) {
-//            imView.setImageBitmap(result);
-//        }
-//    }
-
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -225,9 +166,6 @@ public class ProfileFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -237,18 +175,8 @@ public class ProfileFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }
