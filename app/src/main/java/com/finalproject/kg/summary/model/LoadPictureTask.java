@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 
@@ -13,11 +14,15 @@ import java.io.IOException;
 public class LoadPictureTask extends AsyncTask<Object, Void, Bitmap> {
     View view;
     Bitmap bmp;
+    ProgressBar pb;
 
     @Override
     protected Bitmap doInBackground(Object... objects) {
         view = (View) objects[0];
         String uri = (String)objects[1];
+        if (objects.length > 2) {
+            pb = (ProgressBar) objects[2];
+        }
 
 
         try {
@@ -34,6 +39,9 @@ public class LoadPictureTask extends AsyncTask<Object, Void, Bitmap> {
         if (bitmap != null && view != null) {
 
             ((ImageView)view).setImageBitmap(bitmap);
+            if (pb != null) {
+                pb.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,6 +54,13 @@ public class ProfileFragment extends Fragment {
 
     public ProfileFragment() {
         // Required empty public constructor
+    }
+
+    public void showDrawerButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+//        mActionBarDrawerToggle.syncState();
     }
 
     @Override
@@ -140,7 +148,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        showDrawerButton();
         setHasOptionsMenu(true);
         ((MainNotesActivity)getActivity()).hideFloatingActionButton();
 

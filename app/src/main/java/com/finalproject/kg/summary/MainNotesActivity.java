@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -89,10 +90,24 @@ public class MainNotesActivity extends AppCompatActivity
         });
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    onBackPressed();
+                }else if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+                    mDrawer.closeDrawer(GravityCompat.START);
+                } else {
+                    mDrawer.openDrawer(Gravity.LEFT);
+                }
+                toggle.syncState();
+            }
+        });
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -112,10 +127,14 @@ public class MainNotesActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else if (getSupportFragmentManager().getBackStackEntryCount()>0) {
+            getFragmentManager().popBackStack();
+
 
             if(!Global.instance().getItem().isVisible()) {
                 Global.instance().getItem().setVisible(true);
+
             }
             fabBtn.setVisibility(View.VISIBLE);
             super.onBackPressed();
@@ -123,9 +142,15 @@ public class MainNotesActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_notes, menu);
+        Global.instance().setItem(menu.findItem(R.id.action_filter));
         return true;
     }
 
@@ -136,7 +161,7 @@ public class MainNotesActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if(id == R.id.action_filter) {
-            Global.instance().setItem(item);
+
 
             item.setVisible(false);
         }
@@ -163,6 +188,8 @@ public class MainNotesActivity extends AppCompatActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

@@ -3,6 +3,7 @@ package com.finalproject.kg.summary;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,11 @@ public class CourseListFragment extends Fragment {
         lstCourse.add(new CourseList("Statistic",false));
         lstCourse.add(new CourseList("Infi",false));
     }
-
+    public void showBackButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +54,7 @@ public class CourseListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_course_list, container, false);
         list = (ListView) view.findViewById(R.id.course_listview);
-
+        showBackButton();
         Model.instance().getStudentById(Model.instance().getUserId(), new Model.GetStudentListener(){
                     @Override
                     public void done(Student st) {

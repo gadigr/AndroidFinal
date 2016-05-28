@@ -124,27 +124,47 @@ public class ModelFirebase {
         stRef.setValue(st);
     }
 
-    public void doLikeToSummary(Summary su, Model.doLikeToSummaryListener listener) {
+    public void doLikeToSummary(Summary su, final Model.doLikeToSummaryListener listener) {
         Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
-        stRef.setValue(su);
+        stRef.setValue(su, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                listener.done();
+            }
+        });
     }
 
-    public void addCommentToSummary(Summary su, Model.AddCommentListener listener) {
+    public void addCommentToSummary(Summary su, final Model.AddCommentListener listener) {
         Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
-        stRef.setValue(su);
+        stRef.setValue(su, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                listener.done();
+            }
+        });
     }
 
-    public void updateCourse(Student st, Model.UpdateCourseListener listener) {
+    public void updateCourse(Student st, final Model.UpdateCourseListener listener) {
         Firebase stRef = myFirebaseRef.child("Students").child(st.getId());
-        stRef.setValue(st);
+        stRef.setValue(st, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                listener.done();
+            }
+        });
     }
 
-    public void addSummary(Summary su, Model.AddSummaryListener listener) {
+    public void addSummary(final Summary su, final Model.AddSummaryListener listener) {
         //Firebase stRef = myFirebaseRef.child("Summaries").child(su.getId());
         Firebase stRef = myFirebaseRef.child("Summaries");
         Firebase stRefPush = stRef.push();
         su.setId(stRefPush.getKey());
-        stRefPush.setValue(su);
+        stRefPush.setValue(su, new Firebase.CompletionListener() {
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                listener.done(su);
+            }
+        });
     }
 
     public void signeup(String email, String pwd, final Model.SignupListener listener) {

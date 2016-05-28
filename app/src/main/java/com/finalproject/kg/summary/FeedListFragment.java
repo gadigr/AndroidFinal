@@ -1,5 +1,6 @@
 package com.finalproject.kg.summary;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -7,6 +8,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -47,10 +49,19 @@ public class FeedListFragment extends Fragment {
 
     public final List<Course> lstCourse = new LinkedList<Course>();
 
+    public void showDrawerButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        }
+//        mActionBarDrawerToggle.syncState();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        showDrawerButton();
         view = inflater.inflate(R.layout.fragment_feed_list, container, false);
         list = (ListView) view.findViewById(R.id.feed_listview);
         pbLoading = (ProgressBar) view.findViewById(R.id.pbLoading);
@@ -162,6 +173,7 @@ public class FeedListFragment extends Fragment {
             final TextView feed_list_row_comment_count = (TextView) convertView.findViewById(R.id.feed_list_row_comment_count);
             final ImageView feed_list_row_profile_image = (ImageView)convertView.findViewById(R.id.feed_list_row_profile_image);
             final ImageView feed_list_row_summary_pictures = (ImageView)convertView.findViewById(R.id.feed_list_row_summary_image);
+            final ProgressBar feed_lsit_row_progress_bar = (ProgressBar)convertView.findViewById(R.id.img_progressBar);
             convertView.setTag(position);
 
             final Summary su = data.get(position);
@@ -170,11 +182,12 @@ public class FeedListFragment extends Fragment {
             feed_list_row_date.setText(sdf.format(su.getDateTime().getTime()));
             feed_list_row_course.setText(su.getCourse());
             new LoadPictureTask().execute(feed_list_row_profile_image, su.getStudentId());
+            new LoadPictureTask().execute(feed_list_row_summary_pictures, su.getSummaryImage(), feed_lsit_row_progress_bar);
 
             feed_list_row_summary_pictures.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String[] pics = new String[] {su.getSummaryImage(), su.getSummaryImage(), su.getSummaryImage()};
+                    String[] pics = new String[] {su.getSummaryImage()};
                     Intent i = new Intent(getActivity(), FullScreenViewActivity.class);
                     i.putStringArrayListExtra("pics", new ArrayList<String>(Arrays.asList(pics)));
                     getActivity().startActivity(i);

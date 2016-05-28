@@ -3,6 +3,7 @@ package com.finalproject.kg.summary;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -48,6 +49,12 @@ public class CommentsListFragment extends Fragment {
         }
     }
 
+    public void showBackButton() {
+        if (getActivity() instanceof AppCompatActivity) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
     public void UpdateData()
     {
         if(data.size()!=0) {
@@ -64,7 +71,7 @@ public class CommentsListFragment extends Fragment {
         list = (ListView) Mainview.findViewById(R.id.comments_listview);
         final Button comments_list_add_comment = (Button) Mainview.findViewById(R.id.comments_list_add_comment);
         final TextView comments_list_add_text_comment = (TextView) Mainview.findViewById(R.id.comments_list_add_text_comment);
-
+        showBackButton();
         adapter = new MyAddapter();
         list.setAdapter(adapter);
 

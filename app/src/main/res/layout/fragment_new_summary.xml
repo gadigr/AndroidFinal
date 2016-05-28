@@ -10,7 +10,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:weightSum="1">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -32,31 +33,32 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="355dp"
+            android:layout_weight="0.40">
 
             <ImageView
-                android:layout_width="170dp"
-                android:layout_height="200dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:id="@+id/new_summary_image"
-                android:layout_centerHorizontal="true"
-                android:src="@mipmap/profile"
+                android:src="@mipmap/documents"
                 android:layout_gravity="center_horizontal"
                 android:paddingEnd="0dp"
                 android:paddingStart="0dp"
-                android:cropToPadding="false" />
+                android:cropToPadding="false"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Upload Summary"
                 android:id="@+id/new_summary_image_upload"
-                android:layout_centerInParent="true"
-                android:layout_alignParentBottom="true"
                 android:background="#af2b2b2b"
                 android:textColor="#ffffff"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp" />
+                android:paddingRight="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
         </RelativeLayout>
 
         <Button
@@ -67,7 +69,7 @@
             android:background="#3749b5"
             android:textSize="25dp"
             android:textColor="#ffffff"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/new_summary_upload_button" />
     </LinearLayout>
 </FrameLayout>
