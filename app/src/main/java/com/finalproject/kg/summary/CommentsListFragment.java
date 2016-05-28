@@ -33,8 +33,7 @@ import java.util.List;
 public class CommentsListFragment extends Fragment {
 
     // Empty Constructor
-    public CommentsListFragment() {
-    }
+    public CommentsListFragment() {}
 
     // Variable of the class
     Summary su;

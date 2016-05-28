@@ -1,14 +1,11 @@
 package com.finalproject.kg.summary;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
 import com.finalproject.kg.summary.model.Model;
 import com.finalproject.kg.summary.model.Summary;
 import com.finalproject.kg.summary.model.SummaryComment;
 import com.finalproject.kg.summary.model.SummaryLike;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,16 +28,23 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
+//**************************************************
+// New Summary Fragment
+// This Fragment give to the user add new summary
+// Kobi hay (305623969) & Gadi gomaz (305296139)
+//**************************************************
 public class NewSummaryFragment extends Fragment {
+
+    // Variable of the class
     private static final int REQUEST_TAKE_PHOTO = 15;
     ImageView iv;
     InputStream in;
     ProgressDialog dialog;
 
-    public NewSummaryFragment() {
-        // Required empty public constructor
-    }
+    // Empty Constructor
+    public NewSummaryFragment() {}
 
+    // This function show the back button on the menu
     public void showBackButton() {
         if (getActivity() instanceof AppCompatActivity) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -51,9 +53,7 @@ public class NewSummaryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         MenuItem i = item;
-
         return true;
     }
 
@@ -62,11 +62,14 @@ public class NewSummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_summary, container, false);
         final Spinner spinner = (Spinner) view.findViewById(R.id.new_summary_spinner_course);
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.course_array, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         showBackButton();
@@ -96,9 +99,13 @@ public class NewSummaryFragment extends Fragment {
         return view;
     }
 
+    // Public function Create new summary
     public void CreateNewSummary(String Course)
     {
+        // Show dialog
         dialog.show();
+
+        // Get current date
         Calendar cc = Calendar.getInstance();
         cc.set(cc.get(Calendar.YEAR), cc.get(Calendar.MONTH),cc.get(Calendar.DAY_OF_MONTH) ,  cc.get(Calendar.HOUR),  cc.get(Calendar.MINUTE),  cc.get(Calendar.SECOND));
         List<SummaryLike> lstLike = new LinkedList<SummaryLike>();
@@ -107,12 +114,14 @@ public class NewSummaryFragment extends Fragment {
         sl.setLike(false);
         lstLike.add(sl);
 
+        // Upload the summary picture
         try {
             Model.instance().uploadPic(in, "post/"+ Model.instance().getUserId()+"/"+ cc.getTimeInMillis());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // List of comment
         List<SummaryComment> lstComment = new LinkedList<SummaryComment>();
         SummaryComment sc = new SummaryComment();
         sc.setShow(false);
@@ -121,17 +130,19 @@ public class NewSummaryFragment extends Fragment {
         sc.setDateTime(cc);
         lstComment.add(sc);
         Summary ss = new Summary("",Model.instance().getConnectedStudent().getName(), Model.instance().getUserId(), "post/"+ Model.instance().getUserId()+"/"+ cc.getTimeInMillis(), cc,Course,lstLike,lstComment);
+
+        // Add the summary to the db
         Model.instance().addSummary(ss,new Model.AddSummaryListener() {
             @Override
             public void done(Summary su) {
-                Log.d("TAG", "Wirte New Feed ");
+                // Hide the dialog
                 dialog.dismiss();
+
+                // Show the fab button
                 Global.instance().getFabBtn().setVisibility(View.VISIBLE);
                 getActivity().onBackPressed();
             }
         });
-
-
     }
 
     @Override
@@ -139,26 +150,20 @@ public class NewSummaryFragment extends Fragment {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
 
+        // If the req code is take a photo
         if (requestCode == REQUEST_TAKE_PHOTO) {
+
+            // If res code is ok
             if (resultCode == getActivity().RESULT_OK) {
                 //File to upload to cloudinary
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 iv.setImageBitmap(imageBitmap);
-
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
                 byte[] bitmapdata = bos.toByteArray();
                 in = new ByteArrayInputStream(bitmapdata);
-
-
-
-            } else if (resultCode == getActivity().RESULT_CANCELED) {
-                // User cancelled the image capture
-                //finish();
             }
         }
-
     }
-
 }
