@@ -52,9 +52,9 @@
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/etEmail"
-                android:hint="email"
+                android:hint="Enter Email..."
 
-                android:text="k@gmail.com" />
+                />
         </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -73,9 +73,9 @@
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/etPassword"
-                android:hint="password"
+                android:hint="Enter Password..."
 
-        android:text="1" />
+                />
         </LinearLayout>
 
             <Button
