@@ -23,6 +23,7 @@ public class Model {
     private Student mConnectedStud;
 
     ModelFirebase firebaseModel;
+    ModelSql sqlModel;
     ModelCloudinary cloudinaryModel;
 
     public static Model instance() {
@@ -40,8 +41,10 @@ public class Model {
     }
 
     public void getAllSummariesAsynch(GetSummaryListener listener){
+        List<Summary> list = sqlModel.getAllSummaries();
         firebaseModel.getAllSummariesAsynch(listener);
     }
+
     public void getCourseAsynch(GetCourseListener listener) {
         firebaseModel.getCourseAsynch(listener);
     }
@@ -91,11 +94,13 @@ public class Model {
     }
 
     public void addSummary(Summary su, AddSummaryListener listener) {
+        sqlModel.add(su);
         firebaseModel.addSummary(su, listener);
     }
 
     private Model() {
         firebaseModel = new ModelFirebase(StudApplication.getContext());
+        sqlModel = new ModelSql(StudApplication.getContext());
         cloudinaryModel = new ModelCloudinary();
     }
 

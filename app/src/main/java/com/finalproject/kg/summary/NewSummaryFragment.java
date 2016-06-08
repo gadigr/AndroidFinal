@@ -25,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -129,7 +130,7 @@ public class NewSummaryFragment extends Fragment {
         sc.setComment("");
         sc.setDateTime(cc);
         lstComment.add(sc);
-        Summary ss = new Summary("",Model.instance().getConnectedStudent().getName(), Model.instance().getUserId(), "post/"+ Model.instance().getUserId()+"/"+ cc.getTimeInMillis(), cc,Course,lstLike,lstComment);
+        Summary ss = new Summary("",Model.instance().getConnectedStudent().getName(), Model.instance().getUserId(), "post/"+ Model.instance().getUserId()+"/"+ cc.getTimeInMillis(), cc,Course,lstLike,lstComment,new Date());
 
         // Add the summary to the db
         Model.instance().addSummary(ss,new Model.AddSummaryListener() {

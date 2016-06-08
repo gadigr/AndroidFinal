@@ -11,6 +11,12 @@ public class SummaryLike {
     {
     }
 
+    public SummaryLike(String UserId,boolean Like)
+    {
+        this.UserId = UserId;
+        this.Like = Like;
+    }
+
     public void setUserId(String UserId)
     {
         this.UserId = UserId;

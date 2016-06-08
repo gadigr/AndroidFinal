@@ -15,6 +15,15 @@ public class SummaryComment {
     {
     }
 
+    public SummaryComment(boolean Show,String UserWriterId,String Comment,Calendar DateTime)
+    {
+        this.Show = Show;
+        this.UserWriterId = UserWriterId;
+        this.Comment = Comment;
+        this.DateTime = DateTime;
+    }
+
+
     public Calendar getDateTime() {
         return DateTime;
     }

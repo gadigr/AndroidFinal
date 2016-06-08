@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.finalproject.kg.summary.model.Course;
 import com.finalproject.kg.summary.model.LoadPictureTask;
 import com.finalproject.kg.summary.model.Model;
+import com.finalproject.kg.summary.model.MyConvert;
 import com.finalproject.kg.summary.model.Student;
 import com.finalproject.kg.summary.model.Summary;
 import com.finalproject.kg.summary.model.SummaryComment;

@@ -81,11 +81,8 @@ public class ModelFirebase {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 final List<Summary> suList = new LinkedList<Summary>();
-                Log.d("TAG", "There are " + snapshot.getChildrenCount() + " blog posts");
                 for (DataSnapshot stSnapshot : snapshot.getChildren()) {
                     Summary su = stSnapshot.getValue(Summary.class);
-                    //Log.d("TAG", st.getFname() + " - " + st.getId());
-                    Log.d("TAG","kkkkkk3");
                     suList.add(su);
                 }
                 listener.onResult(suList);
