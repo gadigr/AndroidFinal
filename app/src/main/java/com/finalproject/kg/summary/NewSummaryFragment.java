@@ -3,6 +3,7 @@ package com.finalproject.kg.summary;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -159,6 +160,10 @@ public class NewSummaryFragment extends Fragment {
                 //File to upload to cloudinary
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+                if (getResources().getConfiguration().orientation == getResources().getConfiguration().ORIENTATION_PORTRAIT)
+                    imageBitmap = Global.instance().rotateImage(imageBitmap, 90);
+
                 iv.setImageBitmap(imageBitmap);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);

@@ -134,6 +134,10 @@ public class SignUpActivity extends ActionBarActivity {
                 //File to upload to cloudinary
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+                if (getResources().getConfiguration().orientation == getResources().getConfiguration().ORIENTATION_PORTRAIT)
+                    imageBitmap = Global.instance().rotateImage(imageBitmap, 90);
+
                 iv.setImageBitmap(imageBitmap);
             }
         }

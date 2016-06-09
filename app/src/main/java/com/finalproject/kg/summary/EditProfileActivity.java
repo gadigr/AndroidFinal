@@ -133,6 +133,9 @@ public class EditProfileActivity extends AppCompatActivity {
                 //File to upload to cloudinary
                 Bundle extras = data.getExtras();
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
+                if (getResources().getConfiguration().orientation == getResources().getConfiguration().ORIENTATION_PORTRAIT)
+                    imageBitmap = Global.instance().rotateImage(imageBitmap, 90);
+
                 imImage.setImageBitmap(imageBitmap);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);

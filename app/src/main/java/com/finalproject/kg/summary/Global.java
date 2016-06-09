@@ -1,5 +1,7 @@
 package com.finalproject.kg.summary;
 
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.support.design.widget.FloatingActionButton;
 import android.view.MenuItem;
 
@@ -35,6 +37,16 @@ public class Global {
     public FloatingActionButton getFabBtn()
     {
         return this.fabBtn;
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Bitmap retVal;
+
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        retVal = Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+
+        return retVal;
     }
 
 
