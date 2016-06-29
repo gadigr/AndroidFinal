@@ -5,6 +5,9 @@ import android.graphics.Matrix;
 import android.support.design.widget.FloatingActionButton;
 import android.view.MenuItem;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 //**************************************************
 // Global class
 // Kobi hay (305623969) & Gadi gomaz (305296139)
@@ -20,6 +23,14 @@ public class Global {
     private Global()
     {
 
+    }
+
+    public static String getDate()
+    {
+        SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+        //SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return (dateFormatGmt.format(new Date()).toString());
     }
 
     // Global instance

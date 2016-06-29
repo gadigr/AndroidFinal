@@ -20,6 +20,14 @@ public class ModelSql {
         dbHelper = new MyDBHelper(context);
     }
 
+    public SQLiteDatabase getWritableDB(){
+        return dbHelper.getWritableDatabase();
+    }
+
+    public SQLiteDatabase getReadbleDB(){
+        return dbHelper.getReadableDatabase();
+    }
+
     public void add(Summary su) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         SummarySql.add(db, su);
@@ -40,12 +48,14 @@ public class ModelSql {
         public void onCreate(SQLiteDatabase db) {
             //create the DB schema
             SummarySql.create(db);
+            LastUpdateSql.create(db);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             SummarySql.drop(db);
             onCreate(db);
+            LastUpdateSql.drop(db);
         }
     }
 }

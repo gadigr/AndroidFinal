@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Kobi on 16/05/2016.
@@ -21,7 +22,7 @@ public class Summary {
     private String Course;
     private List<SummaryLike> lstLike;
     private List<SummaryComment> lstComment;
-    private Date LastUpdate;
+    private String LastUpdate;
 
     public String getId() {
         return Id;
@@ -39,7 +40,7 @@ public class Summary {
         return SummaryImage;
     }
 
-    public Date getLastUpdate() {
+    public String getLastUpdate() {
         return LastUpdate;
     }
 
@@ -90,7 +91,7 @@ public class Summary {
         this.Course = Course;
     }
 
-    public void setLastUpdate(Date LastUpdate)
+    public void setLastUpdate(String LastUpdate)
     {
         this.LastUpdate = LastUpdate;
     }
@@ -107,12 +108,13 @@ public class Summary {
 
     public Summary()
     {
-        Calendar cc = Calendar.getInstance();
-        //LastUpdate = Date(Calendar.YEAR,Calendar.MONTH,Calendar.DAY_OF_MONTH,Calendar.HOUR,Calendar.MINUTE,Calendar.SECOND);
-        LastUpdate = new Date();
+        SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+        //SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        LastUpdate =  dateFormatGmt.format(new Date()).toString();
     }
 
-    public Summary(String Id,String Name, String StudentId, String SummaryImage, Calendar DateTime,String Course,List<SummaryLike> lstLike, List<SummaryComment> lstComment, Date LastUpdate)
+    public Summary(String Id,String Name, String StudentId, String SummaryImage, Calendar DateTime,String Course,List<SummaryLike> lstLike, List<SummaryComment> lstComment, String LastUpdate)
     {
         this.Id = Id;
         this.Name = Name;

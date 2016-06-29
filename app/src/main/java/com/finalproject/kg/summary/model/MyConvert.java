@@ -35,7 +35,7 @@ public class MyConvert {
         for (String currLike : arr)
         {
             String[] arr2 = currLike.split("#");
-            SummaryLike sl = new SummaryLike(arr2[0],Boolean.getBoolean(arr2[1]));
+            SummaryLike sl = new SummaryLike(arr2[0],Boolean.valueOf(arr2[1]));
             lstLike.add(sl);
         }
 
@@ -69,7 +69,7 @@ public class MyConvert {
             }
 
 
-            SummaryComment sc = new SummaryComment(Boolean.getBoolean(arr2[0]),arr2[1],arr2[2],cal);
+            SummaryComment sc = new SummaryComment(Boolean.valueOf(arr2[0]),arr2[1],arr2[2],cal);
             LstComment.add(sc);
         }
 

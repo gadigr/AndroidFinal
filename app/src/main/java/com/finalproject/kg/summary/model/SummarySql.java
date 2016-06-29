@@ -40,16 +40,11 @@ public class SummarySql {
         values.put(SUMMARY_COURSE, su.getCourse());
         values.put(SUMMARY_LIKE, MyConvert.instance().ConvertLikeListToString(su.getLstLike()));
         values.put(SUMMARY_COMMENT, MyConvert.instance().ConvertCommentListToString(su.getLstComment()));
+        values.put(SUMMARY_LAST_UPDATE, su.getLastUpdate());
 
+        //String ss = su.getLstLike().toString();
 
-        SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        String datetime = myFormat.format(su.getLastUpdate());
-
-        values.put(SUMMARY_LAST_UPDATE, datetime);
-
-        String ss = su.getLstLike().toString();
-
-        db.insertWithOnConflict(SUMMARY_TABLE, SUMMARY_ID, values,SQLiteDatabase.CONFLICT_IGNORE);
+        db.insertWithOnConflict(SUMMARY_TABLE, SUMMARY_ID, values,SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public static List<Summary> getAllSummaries(SQLiteDatabase db) {
@@ -75,8 +70,9 @@ public class SummarySql {
                 String course = cursor.getString(courseIndex);
                 String like = cursor.getString(likeIndex);
                 String comment = cursor.getString(commentIndex);
+                String lastUpdate = cursor.getString(lastUpdateIndex);
                 Calendar cal = Calendar.getInstance();
-                SimpleDateFormat  sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
 
                 try {
                     cal.setTime(sdf.parse(datetime));
@@ -84,11 +80,11 @@ public class SummarySql {
                     e.printStackTrace();
                 }
 
-                String lastUpdate = cursor.getString(lastUpdateIndex);
 
-                Date dd = new Date(lastUpdate);
 
-                Summary su = new Summary(id, name, studentId, image, cal, course,MyConvert.instance().ConvertStringToLikeList(like),MyConvert.instance().ConvertStringToCommentList(comment), dd);
+                //Date dd = new Date(lastUpdate);
+
+                Summary su = new Summary(id, name, studentId, image, cal, course,MyConvert.instance().ConvertStringToLikeList(like),MyConvert.instance().ConvertStringToCommentList(comment), lastUpdate);
                 list.add(su);
             } while (cursor.moveToNext());
 
@@ -114,5 +110,12 @@ public class SummarySql {
 
     public static void drop(SQLiteDatabase db) {
         db.execSQL("drop table " + SUMMARY_TABLE);
+    }
+
+    public static String getLastUpdateDate(SQLiteDatabase db){
+        return LastUpdateSql.getLastUpdate(db,SUMMARY_TABLE);
+    }
+    public static void setLastUpdateDate(SQLiteDatabase db, String date){
+        LastUpdateSql.setLastUpdate(db,SUMMARY_TABLE, date);
     }
 }

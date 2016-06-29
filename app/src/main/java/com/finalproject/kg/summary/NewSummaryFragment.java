@@ -25,10 +25,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 //**************************************************
 // New Summary Fragment
@@ -131,7 +133,14 @@ public class NewSummaryFragment extends Fragment {
         sc.setComment("");
         sc.setDateTime(cc);
         lstComment.add(sc);
-        Summary ss = new Summary("",Model.instance().getConnectedStudent().getName(), Model.instance().getUserId(), "post/"+ Model.instance().getUserId()+"/"+ cc.getTimeInMillis(), cc,Course,lstLike,lstComment,new Date());
+
+        SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+        SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String date = null;
+        date =  dateFormatGmt.format(new Date()) .toString();
+
+        Summary ss = new Summary("",Model.instance().getConnectedStudent().getName(), Model.instance().getUserId(), "post/"+ Model.instance().getUserId()+"/"+ cc.getTimeInMillis(), cc,Course,lstLike,lstComment,date);
 
         // Add the summary to the db
         Model.instance().addSummary(ss,new Model.AddSummaryListener() {

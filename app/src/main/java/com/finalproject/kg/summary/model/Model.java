@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.graphics.Bitmap;
 import android.text.style.UpdateAppearance;
+
+import com.finalproject.kg.summary.Global;
 import com.finalproject.kg.summary.StudApplication;
 import com.firebase.client.AuthData;
 import com.firebase.client.FirebaseError;
@@ -40,9 +42,36 @@ public class Model {
         public void onCancel();
     }
 
-    public void getAllSummariesAsynch(GetSummaryListener listener){
-        List<Summary> list = sqlModel.getAllSummaries();
-        firebaseModel.getAllSummariesAsynch(listener);
+    public void getAllSummariesAsynch(final GetSummaryListener listener) {
+        //List<Summary> list = sqlModel.getAllSummaries();
+        //firebaseModel.getAllSummariesAsynch(listener);
+
+        final String lastUpdateDate = SummarySql.getLastUpdateDate(sqlModel.getReadbleDB());
+        firebaseModel.getAllSummariesAsynch(new GetSummaryListener() {
+            @Override
+            public void onResult(List<Summary> su) {
+                if (su != null && su.size() > 0) {
+                    //update the local DB
+                    String reacentUpdate = lastUpdateDate;
+                    for (Summary s : su) {
+                        SummarySql.add(sqlModel.getWritableDB(), s);
+                        if (reacentUpdate == null || s.getLastUpdate().compareTo(reacentUpdate) > 0) {
+                            reacentUpdate = s.getLastUpdate();
+                        }
+                        //Log.d("TAG","updating: " + s.toString());
+                    }
+                    SummarySql.setLastUpdateDate(sqlModel.getWritableDB(), reacentUpdate);
+                }
+                //return the complete student list to the caller
+                List<Summary> res = SummarySql.getAllSummaries(sqlModel.getReadbleDB());
+                listener.onResult(res);
+            }
+
+            @Override
+            public void onCancel() {
+                listener.onCancel();
+            }
+        });
     }
 
     public void getCourseAsynch(GetCourseListener listener) {
@@ -86,6 +115,7 @@ public class Model {
     }
 
     public void doLikeToSummary(Summary su, Model.doLikeToSummaryListener listener) {
+        su.setLastUpdate(Global.getDate());
         firebaseModel.doLikeToSummary(su, listener);
     }
 
@@ -94,7 +124,7 @@ public class Model {
     }
 
     public void addSummary(Summary su, AddSummaryListener listener) {
-        sqlModel.add(su);
+        //sqlModel.add(su);
         firebaseModel.addSummary(su, listener);
     }
 
